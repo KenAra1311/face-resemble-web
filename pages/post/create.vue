@@ -33,6 +33,7 @@
         :counter="255"
         autocomplete="本文"
         label="本文"
+        prepend-icon="power_input"
         clearable
         clear-icon="cancel"
         required
@@ -65,15 +66,15 @@ export default {
     title: '',
     titleRules: [
       v => !!v || 'タイトルは必ず入力してください！',
-      v => (v && v.length <= 16) || 'タイトルは32文字以内で入力してください！',
+      v => (v && v.length <= 32) || 'タイトルは32文字以内で入力してください！',
+    ],
+    image: '',
+    imageRules: [
+      v => (!v || v.size < 10000000) || '10MB 以内のファイルサイズでアップしてください！',
     ],
     content: '',
     contentRules: [
       v => (v && v.length <= 255) || '255文字以内で入力してください！',
-    ],
-    image: '',
-    imageRules: [
-      v => !v || v.size < 2000000 || '2 MB 以内のファイルサイズでアップしてください！',
     ],
   }),
 
@@ -82,12 +83,12 @@ export default {
       this.$refs.form.reset()
     },
     postSend () {
-      const postData = {
+      const post = {
         title: this.title,
         content: this.content,
         image: this.image,
       }
-      axios.post(`posts/${user.id}`, postData)
+      axios.post(`posts/${user.id}`, post)
       .then(res => {
         this.$router.push('/')
       })
