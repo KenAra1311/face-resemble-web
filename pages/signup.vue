@@ -5,7 +5,7 @@
     lazy-validation
   >
 
-    <h1>新規登録</h1>
+    <h1 class="text-align">サインアップ</h1>
     <p v-if="error" class="errors">{{error}}</p>
 
     <v-text-field
@@ -88,7 +88,7 @@
       color="success"
       @click="signUp"
     >
-      アカウントを作成する
+      サインアップ
     </v-btn>
   </v-form>
 </template>

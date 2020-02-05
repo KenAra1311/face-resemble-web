@@ -90,26 +90,54 @@
 
 <script>
 export default {
+  computed: {
+    user () {
+      return this.$store.state.currentUser
+    },
+    items () {
+      if ( this.user ) {
+        return [
+          {
+            icon: 'mdi-apps',
+            title: '投稿一覧',
+            to: '/'
+          },
+          {
+            icon: 'mdi-chart-bubble',
+            title: '顔写真を投稿',
+            to: '/post/create'
+          },
+          {
+            icon: 'info',
+            title: 'アカウント情報',
+            to: '/user'
+          }
+        ]
+      } else {
+        return [
+          {
+            icon: 'mdi-apps',
+            title: 'サインイン',
+            to: '/signin'
+          },
+          {
+            icon: 'mdi-chart-bubble',
+            title: '新規登録',
+            to: '/signup'
+          }
+        ]
+      }
+    },
+  },
+
   data: () => ({
     clipped: false,
     drawer: false,
     fixed: false,
-    items: [
-      {
-        icon: 'mdi-apps',
-        title: 'Welcome',
-        to: '/'
-      },
-      {
-        icon: 'mdi-chart-bubble',
-        title: '顔写真を投稿',
-        to: '/post/create'
-      }
-    ],
     miniVariant: false,
     right: true,
     rightDrawer: false,
-    title: 'Face-Resemble'
+    title: 'Face-Resemble',
   })
 }
 </script>
