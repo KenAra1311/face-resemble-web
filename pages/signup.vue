@@ -58,16 +58,17 @@
       @click:append="show2 = !show2"
     ></v-text-field>
 
-    <v-file-input
-      v-model="profileImage"
-      :rules="profileImageRules"
-      accept="image/*"
-      label="プロフィール画像"
-      prepend-icon="mdi-camera"
-      filled
-      chips
-      show-size
-    ></v-file-input>
+    <v-btn
+      :disabled="uploaded === true"
+      color="info"
+      class="my-5"
+      @click="openCloudinaryWidget"
+      x-large
+      block
+      tile
+    >
+      <v-icon left>mdi-cloud-upload</v-icon> プロフィール画像をアップロード
+    </v-btn>
 
     <v-checkbox
       v-if="adminCheck === true"
@@ -86,7 +87,7 @@
 
     <v-btn
       color="success"
-      @click="signUp"
+      @click="signUp(profileImage)"
     >
       サインアップ
     </v-btn>
@@ -110,20 +111,18 @@ data: () => ({
       v => !!v || 'メールアドレスは必ず入力してください！',
       v => (v && v.length <= 32) || 'メールアドレスは32文字以内で入力してください！',
     ],
-    profileImage: '',
-    profileImageRules: [
-      v => (!v || v.size < 2000000) || '2 MB 以内のファイルサイズでアップしてください！',
-    ],
     password: '',
     passwordConfirm: '',
     passwordRules: [
       v => !!v || 'パスワードは必ず入力してください！',
       v => (v && v.length >= 6 && v.length <= 32)  || 'パスワードは6文字以上32文字以内で入力してください！',
     ],
+    profileImage: '',
     admin: false,
     adminCheck: false,
     show1: false,
     show2: false,
+    uploaded: false,
     error: '',
   }),
 
@@ -131,7 +130,26 @@ data: () => ({
     inputReset () {
       this.$refs.form.reset()
     },
-    signUp () {
+    openCloudinaryWidget () {
+      const widget = cloudinary.createUploadWidget(
+        {
+          cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+          uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET_2,
+          multiple: false,
+          cropping: true,
+        },
+        (error, result) => {
+          if ( !error && result && result.event === "success" ) {
+            // API サーバに渡すためのデータを data に格納
+            this.profileImage = result.info.secure_url
+            this.uploaded      = true
+            widget.hide()
+          }
+        }
+      )
+      widget.open()
+    },
+    signUp (imageUrl) {
       if ( this.password !== this.passwordConfirm ) {
         this.error = 'パスワードが一致していません！'
       }
@@ -141,6 +159,7 @@ data: () => ({
           name: this.name,
           email: res.user.email,
           uid: res.user.uid,
+          profile_image: imageUrl,
         }
         axios.post('/v1/users', { user })
         .then(() => {

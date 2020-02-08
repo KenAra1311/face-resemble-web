@@ -8,13 +8,19 @@
     >
       <v-list-item>
         <v-list-item-avatar color="grey">
-          <v-icon v-if="!user.profile_image">
+
+          <v-img
+            v-if="post.user.profile_image"
+            :src="post.user.profile_image"
+          ></v-img>
+          <v-icon v-if="!post.user.profile_image">
             mdi-account-circle
           </v-icon>
+
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title class="headline">{{ post.title }}</v-list-item-title>
-          <v-list-item-subtitle>by {{ user.name }}</v-list-item-subtitle>
+          <v-list-item-subtitle>by {{ post.user.name }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
