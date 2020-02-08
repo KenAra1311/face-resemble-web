@@ -45,7 +45,39 @@
           <v-icon>mdi-heart</v-icon>
         </v-btn>
       </v-card-actions>
+
+      <v-card-actions v-if="user.id === post.user.id">
+        <v-spacer></v-spacer>
+        <v-icon
+          small
+          @click="deletePost(post.id, index)"
+          title="投稿を削除する"
+        >
+          delete
+        </v-icon>
+      </v-card-actions>
     </v-card>
+
+    <v-dialog
+      v-model="dialog"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">投稿を削除しました！</v-card-title>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dialog = false"
+          >
+            OK
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -73,7 +105,24 @@ export default {
   data: () => ({
     posts: [],
     likes: [],
+    dialog: false,
   }),
+
+  methods: {
+    deletePost (postId, index) {
+      // 削除の確認
+      if ( !confirm('本当に投稿を削除しますか？') ) return
+
+      axios.delete(`/v1/posts/${postId}`)
+      .then(() => {
+        this.posts.splice(index, 1);
+        this.dialog = true
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+  },
 }
 </script>
 

@@ -112,9 +112,7 @@ export default {
     },
     postSend (imageUrl) {
       if ( !this.title ) return
-
-      console.log(imageUrl)
-
+      
       const post = {
         title: this.title,
         content: this.content,
