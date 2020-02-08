@@ -2,7 +2,9 @@
   <div v-if="user">
     <v-card
       max-width="344"
-      class="mx-auto"
+      class="mx-auto my-5"
+      v-for="(post, index) in posts"
+      v-bind:key="index"
     >
       <v-list-item>
         <v-list-item-avatar color="grey">
@@ -11,18 +13,18 @@
           </v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title class="headline">{{ posts.title }}</v-list-item-title>
+          <v-list-item-title class="headline">{{ post.title }}</v-list-item-title>
           <v-list-item-subtitle>by {{ user.name }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
       <v-img
-        src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
+        :src="post.image"
         height="194"
       ></v-img>
 
       <v-card-text>
-        {{ posts.content }}
+        {{ post.content }}
       </v-card-text>
 
       <v-card-actions>
@@ -42,6 +44,8 @@
 </template>
 
 <script>
+import axios from '../plugins/axios'
+
 export default {
   computed: {
     user () {
@@ -49,11 +53,19 @@ export default {
     },
   },
 
+  mounted () {
+    // 顔写真の投稿を取得
+    axios.get('/v1/posts')
+    .then(res => {
+      this.posts = res.data
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  },
+
   data: () => ({
-    posts: {
-      title: '私の友人です :)',
-      content: 'テキストテキストテキストテキストテキスト',
-    },
+    posts: [],
     likes: [],
   }),
 }

@@ -18,16 +18,16 @@
         required
       ></v-text-field>
 
-      <v-file-input
-        v-model="image"
-        :rules="imageRules"
-        accept="image/*"
-        label="顔写真"
-        prepend-icon="mdi-camera"
-        filled
-        chips
-        show-size
-      ></v-file-input>
+      <v-btn
+        :disabled="uploaded === true"
+        color="info"
+        @click="openCloudinaryWidget"
+        x-large
+        block
+        tile
+      >
+        <v-icon left>mdi-cloud-upload</v-icon> 画像を送信
+      </v-btn>
 
       <v-container fluid>
         <v-textarea
@@ -52,17 +52,19 @@
       </v-btn>
 
       <v-btn
+        :disabled="uploaded === false"
         color="success"
-        @click="postSend"
+        @click="postSend(image)"
       >
         投稿する
       </v-btn>
+
     </v-form>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../../plugins/axios'
 
 export default {
   computed: {
@@ -79,26 +81,47 @@ export default {
       v => (v && v.length <= 32) || 'タイトルは32文字以内で入力してください！',
     ],
     image: '',
-    imageRules: [
-      v => (!v || v.size < 10000000) || '10MB 以内のファイルサイズでアップしてください！',
-    ],
     content: '',
     contentRules: [
       v => (v && v.length <= 255) || '255文字以内で入力してください！',
     ],
+    uploaded: false,
   }),
 
   methods: {
     inputReset () {
       this.$refs.form.reset()
     },
-    postSend () {
+    openCloudinaryWidget () {
+      const widget = cloudinary.createUploadWidget(
+        {
+          cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+          uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET_2,
+        },
+        (error, result) => {
+          if ( !error && result && result.event === "success" ) {
+            // API サーバに渡すためのデータを data に格納
+            this.image    = result.info.secure_url
+            this.uploaded = true
+            console.log('Done! Here is the image info: ', result.info)
+            widget.hide()
+          }
+        }
+      )
+      widget.open()
+    },
+    postSend (imageUrl) {
+      if ( !this.title ) return
+
+      console.log(imageUrl)
+
       const post = {
         title: this.title,
         content: this.content,
-        image: this.image,
+        image: imageUrl,
+        user_id: this.user.id,
       }
-      axios.post(`posts/${user.id}`, post)
+      axios.post('/v1/posts', { post })
       .then(res => {
         this.$router.push('/')
       })
