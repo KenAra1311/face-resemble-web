@@ -1,5 +1,9 @@
 <template>
   <v-app dark>
+    <v-overlay v-if="loading">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -93,6 +97,9 @@ export default {
   computed: {
     user () {
       return this.$store.state.currentUser
+    },
+    loading () {
+      return this.$store.state.loading
     },
     items () {
       if ( this.user ) {

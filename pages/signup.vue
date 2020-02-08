@@ -153,6 +153,8 @@ data: () => ({
       if ( this.password !== this.passwordConfirm ) {
         this.error = 'パスワードが一致していません！'
       }
+
+      this.$store.commit('setLoading', true)
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
       .then(res => {
         const user = {
@@ -162,7 +164,9 @@ data: () => ({
           profile_image: imageUrl,
         }
         axios.post('/v1/users', { user })
-        .then(() => {
+        .then(res => {
+          this.$store.commit('setLoading', false)
+          this.$store.commit('setUser', res.data)
           this.$router.push('/')
         })
       })

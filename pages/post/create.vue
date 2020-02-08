@@ -112,7 +112,8 @@ export default {
     },
     postSend (imageUrl) {
       if ( !this.title ) return
-      
+
+      this.$store.commit('setLoading', true)
       const post = {
         title: this.title,
         content: this.content,
@@ -121,6 +122,7 @@ export default {
       }
       axios.post('/v1/posts', { post })
       .then(res => {
+        this.$store.commit('setLoading', false)
         this.$router.push('/')
       })
       .catch(error => {

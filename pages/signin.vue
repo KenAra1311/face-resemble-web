@@ -75,8 +75,10 @@ data: () => ({
       this.$refs.form.reset()
     },
     signIn () {
+      this.$store.commit('setLoading', true)
       firebase.auth().signInWithEmailAndPassword(this.email, this.password)
       .then(res => {
+        this.$store.commit('setLoading', false)
         this.$router.push('/')
       })
       .catch(error => {
