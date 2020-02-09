@@ -109,6 +109,17 @@ export default {
       })
     },
   },
+
+  fetch ({ store, redirect }) {
+    store.watch(
+      state => state.currentUser,
+      (newUser, oldUser) => {
+        if ( !newUser ) {
+          return redirect('/signin')
+        }
+      }
+    )
+  },
 }
 </script>
 
