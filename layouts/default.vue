@@ -4,6 +4,14 @@
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
 
+    <v-alert
+      v-if="notice.status"
+      :type="notice.type"
+      class="notice"
+    >
+      {{ notice.message }}
+    </v-alert>
+
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -101,6 +109,9 @@ export default {
     loading () {
       return this.$store.state.loading
     },
+    notice () {
+      return this.$store.state.topMessage
+    },
     items () {
       if ( this.user ) {
         return [
@@ -148,3 +159,9 @@ export default {
   })
 }
 </script>
+
+<style>
+.notice {
+  top: 80px;
+}
+</style>

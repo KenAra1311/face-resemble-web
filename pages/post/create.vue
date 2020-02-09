@@ -19,7 +19,7 @@
       ></v-text-field>
 
       <v-btn
-        :disabled="uploaded === true"
+        :disabled="uploaded"
         color="info"
         @click="openCloudinaryWidget"
         x-large
@@ -52,7 +52,7 @@
       </v-btn>
 
       <v-btn
-        :disabled="uploaded === false"
+        :disabled="!uploaded"
         color="success"
         @click="postSend(image)"
       >
@@ -96,7 +96,7 @@ export default {
       const widget = cloudinary.createUploadWidget(
         {
           cloudName: process.env.CLOUDINARY_CLOUD_NAME,
-          uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET_1,
+          uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET_2,
           multiple: false,
         },
         (error, result) => {
@@ -123,6 +123,14 @@ export default {
       axios.post('/v1/posts', { post })
       .then(res => {
         this.$store.commit('setLoading', false)
+        this.$store.commit('setNotice', {
+          status: true,
+          message: '投稿しました',
+          type: 'success',
+        })
+        setTimeout(() => {
+          this.$store.commit('setNotice', {})
+        }, 2000)
         this.$router.push('/')
       })
       .catch(error => {

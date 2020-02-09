@@ -134,7 +134,7 @@ data: () => ({
       const widget = cloudinary.createUploadWidget(
         {
           cloudName: process.env.CLOUDINARY_CLOUD_NAME,
-          uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET_2,
+          uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET_1,
           multiple: false,
           cropping: true,
         },

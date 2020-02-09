@@ -57,27 +57,6 @@
         </v-icon>
       </v-card-actions>
     </v-card>
-
-    <v-dialog
-      v-model="dialog"
-      max-width="290"
-    >
-      <v-card>
-        <v-card-title class="headline">投稿を削除しました！</v-card-title>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn
-            color="green darken-1"
-            text
-            @click="dialog = false"
-          >
-            OK
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -116,7 +95,14 @@ export default {
       axios.delete(`/v1/posts/${postId}`)
       .then(() => {
         this.posts.splice(index, 1);
-        this.dialog = true
+        this.$store.commit('setNotice', {
+          status: true,
+          message: '投稿を削除しました',
+          type: 'success',
+        })
+        setTimeout(() => {
+          this.$store.commit('setNotice', {})
+        }, 2000)
       })
       .catch(error => {
         console.log(error)
