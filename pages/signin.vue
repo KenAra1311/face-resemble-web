@@ -79,6 +79,14 @@ data: () => ({
       firebase.auth().signInWithEmailAndPassword(this.email, this.password)
       .then(res => {
         this.$store.commit('setLoading', false)
+        this.$store.commit('setNotice', {
+          status: true,
+          message: 'サインインしました',
+          type: 'success',
+        })
+        setTimeout(() => {
+          this.$store.commit('setNotice', {})
+        }, 2000)
         this.$router.push('/')
       })
       .catch(error => {
