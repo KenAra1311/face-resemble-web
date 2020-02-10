@@ -1,5 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
+require('dotenv').config()
+
 export default {
   mode: 'spa',
   /*
@@ -15,6 +17,9 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      { src: 'https://widget.cloudinary.com/v2.0/global/all.js' }
     ]
   },
   /*
@@ -30,12 +35,15 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '@/plugins/vuetify',
+    '@/plugins/auth-check',
   ],
   /*
   ** Nuxt.js dev-modules
   */
   buildModules: [
     '@nuxtjs/vuetify',
+    '@nuxtjs/dotenv',
   ],
   /*
   ** Nuxt.js modules
