@@ -87,7 +87,7 @@
 
     <v-btn
       color="success"
-      @click="signUp(profileImage)"
+      @click="signUp(profileImage, fileName)"
     >
       サインアップ
     </v-btn>
@@ -118,6 +118,7 @@ data: () => ({
       v => (v && v.length >= 6 && v.length <= 32)  || 'パスワードは6文字以上32文字以内で入力してください！',
     ],
     profileImage: '',
+    fileName: '',
     admin: false,
     adminCheck: false,
     show1: false,
@@ -142,14 +143,15 @@ data: () => ({
           if ( !error && result && result.event === "success" ) {
             // API サーバに渡すためのデータを data に格納
             this.profileImage = result.info.secure_url
-            this.uploaded      = true
+            this.fileName     = result.info.public_id
+            this.uploaded     = true
             widget.hide()
           }
         }
       )
       widget.open()
     },
-    signUp (imageUrl) {
+    signUp (imageUrl, fileName) {
       if ( this.password !== this.passwordConfirm ) {
         this.error = 'パスワードが一致していません！'
       }
@@ -162,6 +164,7 @@ data: () => ({
           email: res.user.email,
           uid: res.user.uid,
           profile_image: imageUrl,
+          file_name: fileName,
         }
         axios.post('/v1/users', { user })
         .then(res => {
