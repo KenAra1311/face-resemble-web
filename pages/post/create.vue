@@ -54,7 +54,7 @@
       <v-btn
         :disabled="!uploaded"
         color="success"
-        @click="postSend(image)"
+        @click="postSend(image, file_name)"
       >
         投稿する
       </v-btn>
@@ -81,6 +81,7 @@ export default {
       v => (v && v.length <= 32) || 'タイトルは32文字以内で入力してください！',
     ],
     image: '',
+    file_name: '',
     content: '',
     contentRules: [
       v => (v && v.length <= 255) || '255文字以内で入力してください！',
@@ -102,15 +103,16 @@ export default {
         (error, result) => {
           if ( !error && result && result.event === "success" ) {
             // API サーバに渡すためのデータを data に格納
-            this.image    = result.info.secure_url
-            this.uploaded = true
+            this.image     = result.info.secure_url
+            this.file_name = result.info.public_id
+            this.uploaded  = true
             widget.hide()
           }
         }
       )
       widget.open()
     },
-    postSend (imageUrl) {
+    postSend (imageUrl, fileName) {
       if ( !this.title ) return
 
       this.$store.commit('setLoading', true)
@@ -118,6 +120,7 @@ export default {
         title: this.title,
         content: this.content,
         image: imageUrl,
+        file_name: fileName,
         user_id: this.user.id,
       }
       axios.post('/v1/posts', { post })
@@ -134,7 +137,7 @@ export default {
         this.$router.push('/')
       })
       .catch(error => {
-        console.log(error)
+        this.$store.commit('setLoading', false)
       })
     },
   },
