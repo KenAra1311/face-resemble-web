@@ -11,14 +11,14 @@
         <v-card
           max-width="344"
           class="mx-auto"
-          v-for="(post, index) in user.posts"
+          v-for="(post, index) in posts"
           v-bind:key="index"
         >
           <v-card-actions>
             <v-spacer />
             <v-icon
               small
-              @click="deletePost(post.id, index)"
+              @click="deletePost(post.id, post.title, index)"
               title="投稿を削除する"
             >
               delete
@@ -82,10 +82,25 @@ export default {
     },
   },
 
+  mounted () {
+    // 顔写真の投稿を取得
+    axios.get('/v1/posts', this.user.id)
+    .then(res => {
+      this.posts = res.data
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  },
+
+  data: () => ({
+    posts: [],
+  }),
+
   methods: {
-    deletePost (postId, index) {
+    deletePost (postId, postTitle, index) {
       // 削除の確認
-      if ( !confirm('本当に投稿を削除しますか？') ) return
+      if ( !confirm('本当に「' + postTitle + '」を削除しますか？') ) return
 
       axios.delete(`/v1/posts/${postId}`)
       .then(() => {
