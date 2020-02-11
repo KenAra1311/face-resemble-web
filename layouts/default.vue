@@ -19,7 +19,7 @@
       fixed
       app
     >
-      <v-list>
+      <v-list shaped>
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -34,63 +34,43 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
+        <v-spacer />
+        <v-btn
+          icon
+          @click.stop="miniVariant = !miniVariant"
+        >
+          <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
+        </v-btn>
       </v-list>
     </v-navigation-drawer>
+
     <v-app-bar
       :clipped-left="clipped"
+      class="pink darken-1"
+      hide-on-scroll
       fixed
       app
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
+      <n-link to="/">
+        <v-toolbar-title v-text="title" class="top-link" />
+      </n-link>
       <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
+      <n-link
+        v-if="user"
+        to="/user/setting"
+        title="ユーザ情報を変更する"
       >
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+        <v-icon>settings</v-icon>
+      </n-link>
     </v-app-bar>
+
     <v-content>
       <v-container>
         <nuxt />
       </v-container>
     </v-content>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+
     <v-footer
       :fixed="fixed"
       app
@@ -115,11 +95,6 @@ export default {
     items () {
       if ( this.user ) {
         return [
-          {
-            icon: 'mdi-apps',
-            title: '投稿一覧',
-            to: '/'
-          },
           {
             icon: 'mdi-chart-bubble',
             title: '顔写真を投稿',
@@ -149,18 +124,25 @@ export default {
   },
 
   data: () => ({
-    clipped: false,
-    drawer: false,
     fixed: false,
+    clipped: true,
+    drawer: false,
     miniVariant: false,
     right: true,
-    rightDrawer: false,
     title: 'Face-Resemble',
   })
 }
 </script>
 
 <style>
+a {
+  text-decoration: none;
+}
+
+.top-link {
+  color: white;
+  font-weight: bold;
+}
 .notice {
   top: 80px;
 }
