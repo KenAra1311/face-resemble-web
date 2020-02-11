@@ -101,8 +101,8 @@ export default {
             to: '/post/create'
           },
           {
-            icon: 'info',
-            title: 'アカウント情報',
+            icon: 'tag_faces',
+            title: 'マイページ',
             to: '/user'
           }
         ]

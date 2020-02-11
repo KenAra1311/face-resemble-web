@@ -182,6 +182,7 @@ data: () => ({
         })
       })
       .catch(error => {
+        this.$store.commit('setLoading', false)
         this.error = (code => {
           switch ( code ) {
             case 'auth/email-already-in-use':

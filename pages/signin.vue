@@ -90,7 +90,7 @@ data: () => ({
         this.$router.push('/')
       })
       .catch(error => {
-        console.log(error)
+        this.$store.commit('setLoading', false)
         this.error = (code => {
           switch ( code ) {
             case 'auth/user-not-found':

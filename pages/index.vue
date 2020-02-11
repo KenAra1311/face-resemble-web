@@ -6,9 +6,19 @@
       v-for="(post, index) in posts"
       v-bind:key="index"
     >
+      <v-card-actions v-if="user.id === post.user.id">
+        <v-spacer></v-spacer>
+        <v-icon
+          small
+          @click="deletePost(post.id, index)"
+          title="投稿を削除する"
+        >
+          delete
+        </v-icon>
+      </v-card-actions>
+
       <v-list-item>
         <v-list-item-avatar color="grey">
-
           <v-img
             v-if="post.user.profile_image"
             :src="post.user.profile_image"
@@ -16,8 +26,8 @@
           <v-icon v-if="!post.user.profile_image">
             mdi-account-circle
           </v-icon>
-
         </v-list-item-avatar>
+        
         <v-list-item-content>
           <v-list-item-title class="headline">{{ post.title }}</v-list-item-title>
           <v-list-item-subtitle>by {{ post.user.name }}</v-list-item-subtitle>
@@ -44,17 +54,6 @@
         <v-btn icon>
           <v-icon>mdi-heart</v-icon>
         </v-btn>
-      </v-card-actions>
-
-      <v-card-actions v-if="user.id === post.user.id">
-        <v-spacer></v-spacer>
-        <v-icon
-          small
-          @click="deletePost(post.id, index)"
-          title="投稿を削除する"
-        >
-          delete
-        </v-icon>
       </v-card-actions>
     </v-card>
   </div>
