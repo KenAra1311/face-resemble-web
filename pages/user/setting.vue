@@ -13,6 +13,14 @@
             <td>メールアドレス</td>
             <td>{{ user.email }}</td>
           </tr>
+          <tr>
+            <td>投稿した顔写真の数</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>マッチングした顔写真の数</td>
+            <td></td>
+          </tr>
         </tbody>
       </template>
     </v-simple-table>
