@@ -28,17 +28,17 @@
           <v-list-item>
             <v-list-item-avatar color="grey">
               <v-img
-                v-if="user.profile_image"
-                :src="user.profile_image"
+                v-if="post.user.profile_image"
+                :src="post.user.profile_image"
               ></v-img>
-              <v-icon v-if="!user.profile_image">
+              <v-icon v-if="!post.user.profile_image">
                 mdi-account-circle
               </v-icon>
             </v-list-item-avatar>
 
             <v-list-item-content>
               <v-list-item-title class="headline">{{ post.title }}</v-list-item-title>
-              <v-list-item-subtitle>by {{ user.name }}</v-list-item-subtitle>
+              <v-list-item-subtitle>by {{ post.user.name }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
 
@@ -84,7 +84,7 @@ export default {
 
   mounted () {
     // 顔写真の投稿を取得
-    axios.get('/v1/posts', this.user.id)
+    axios.get(`/v1/posts?user_id=${this.user.id}`)
     .then(res => {
       this.posts = res.data
     })
