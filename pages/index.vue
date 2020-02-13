@@ -37,6 +37,7 @@
       <v-img
         :src="post.image"
         height="194"
+        @click="displayDialog(post.title, post.emotion)"
       ></v-img>
 
       <v-card-text>
@@ -56,6 +57,30 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+
+    <v-dialog
+      v-model="dialog"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">「{{ dialogTitle }}」の感情</v-card-title>
+
+        <v-card-text>
+          {{ dialogEmotion }}
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dialog = false"
+          >
+            閉じる
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -83,6 +108,9 @@ export default {
   data: () => ({
     posts: [],
     likes: [],
+    dialog: false,
+    dialogTitle: '',
+    dialogEmotion: '',
   }),
 
   methods: {
@@ -105,6 +133,38 @@ export default {
       .catch(error => {
         console.log(error)
       })
+    },
+    displayDialog (title, emotion) {
+      this.dialogTitle = title
+      switch ( emotion ) {
+        case 'anger':
+          this.dialogEmotion = '怒っているようです😥'
+          break
+        case 'contempt':
+          this.dialogEmotion = '軽蔑しているようです😖'
+          break
+        case 'disgust':
+          this.dialogEmotion = '嫌悪感を抱いているようです😞'
+          break
+        case 'fear':
+          this.dialogEmotion = '恐怖に怯えているようです😭'
+          break
+        case 'happiness':
+          this.dialogEmotion = '幸せのようです😀'
+          break
+        case 'neutral':
+          this.dialogEmotion = '真顔です🙁'
+          break
+        case 'sadness':
+          this.dialogEmotion = '悲しさの中にも雄々しく勇ましいところがありますね🤓'
+          break
+        case 'surprise':
+          this.dialogEmotion = '驚いていますね！😮'
+          break
+        default:
+          this.dialogEmotion = '感情を読み取れませんでした…'
+      }
+      this.dialog = true
     },
   },
 

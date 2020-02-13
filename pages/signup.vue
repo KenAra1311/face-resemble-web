@@ -59,7 +59,7 @@
     ></v-text-field>
 
     <v-btn
-      :disabled="uploaded === true"
+      :disabled="uploaded"
       color="info"
       class="my-5"
       @click="openCloudinaryWidget"
