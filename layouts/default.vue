@@ -148,6 +148,12 @@ a {
   color: white;
   font-weight: bold;
 }
+.v-application .success {
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 10;
+  top: 80px;
+}
 .v-application .warning {
   position: -webkit-sticky;
   position: sticky;
