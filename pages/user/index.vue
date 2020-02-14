@@ -5,7 +5,7 @@
       grow
     >
       <v-tab>投稿した顔写真</v-tab>
-      <v-tab>マッチングした顔写真</v-tab>
+      <v-tab>感情が認識された顔写真</v-tab>
 
       <v-tab-item>
         <v-card
@@ -52,15 +52,9 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn
-              text
-              color="deep-purple accent-4"
-            >
-              コメント
-            </v-btn>
             <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>mdi-heart</v-icon>
+            <v-btn @click="canNotLike" icon>
+              <v-icon color="purple">mdi-heart</v-icon>
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -117,6 +111,16 @@ export default {
       .catch(error => {
         console.log(error)
       })
+    },
+    canNotLike () {
+      this.$store.commit('setNotice', {
+        status: true,
+        message: '自分の投稿にはいいねできません',
+        type: 'warning',
+      })
+      setTimeout(() => {
+        this.$store.commit('setNotice', {})
+      }, 2000)
     },
   },
 

@@ -12,7 +12,7 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '利用ユーザが顔写真を投稿して、似ている顔写真どうしを投稿したユーザどうしがマッチングすることのできるWEBアプリケーションサービスになります。' }
+      { hid: 'description', name: 'description', content: '利用ユーザが顔写真を投稿して、その顔の感情を読み取ってどのような感情かを知ることのできるWEBアプリケーションサービスになります。' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }

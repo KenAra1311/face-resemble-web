@@ -52,12 +52,7 @@
           </tr>
           <tr>
             <td>投稿した顔写真の数</td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>マッチングした顔写真の数</td>
-            <td></td>
+            <td>{{ user.posts.length }}</td>
             <td></td>
           </tr>
         </tbody>

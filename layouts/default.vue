@@ -47,7 +47,8 @@
     <v-app-bar
       :clipped-left="clipped"
       class="pink darken-1"
-      hide-on-scroll
+      :collapse="!collapseOnScroll"
+      :collapse-on-scroll="collapseOnScroll"
       fixed
       app
     >
@@ -128,6 +129,7 @@ export default {
     clipped: true,
     drawer: false,
     miniVariant: false,
+    collapseOnScroll: true,
     right: true,
     title: 'Face-Resemble',
   })
@@ -135,6 +137,12 @@ export default {
 </script>
 
 <style>
+* {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
 a {
   text-decoration: none;
 }
