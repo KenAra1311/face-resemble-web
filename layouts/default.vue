@@ -7,7 +7,6 @@
     <v-alert
       v-if="notice.status"
       :type="notice.type"
-      class="notice"
     >
       {{ notice.message }}
     </v-alert>
@@ -47,7 +46,7 @@
     <v-app-bar
       :clipped-left="clipped"
       class="pink darken-1"
-      hide-on-scroll
+      dense
       fixed
       app
     >
@@ -135,6 +134,12 @@ export default {
 </script>
 
 <style>
+* {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
 a {
   text-decoration: none;
 }
@@ -143,7 +148,10 @@ a {
   color: white;
   font-weight: bold;
 }
-.notice {
+.v-application .warning {
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 10;
   top: 80px;
 }
 </style>

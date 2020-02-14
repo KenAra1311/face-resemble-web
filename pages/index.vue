@@ -45,16 +45,24 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn
-          text
-          color="deep-purple accent-4"
-        >
-          コメント
-        </v-btn>
         <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
+        <div v-if="user.id === post.user.id">
+          <v-btn @click="canNotLike" icon>
+            <v-icon color="purple">mdi-heart</v-icon>
+          </v-btn>
+        </div>
+        <div v-else-if="post.likes.some(like => like.user_id === user.id)">
+          <v-btn @click="goodReset(index)" icon>
+            <v-icon color="pink">mdi-heart</v-icon>
+          </v-btn>
+        </div>
+        <div v-else>
+          <v-btn @click="good(post.id, index)" icon>
+            <v-icon>mdi-heart</v-icon>
+          </v-btn>
+        </div>
+        {{ post.count ? post.count : 0 }}
+
       </v-card-actions>
     </v-card>
 
@@ -107,7 +115,6 @@ export default {
 
   data: () => ({
     posts: [],
-    likes: [],
     dialog: false,
     dialogTitle: '',
     dialogEmotion: '',
@@ -166,17 +173,64 @@ export default {
       }
       this.dialog = true
     },
-  },
+    canNotLike () {
+      this.$store.commit('setNotice', {
+        status: true,
+        message: '自分の投稿にはいいねできません',
+        type: 'warning',
+      })
+      setTimeout(() => {
+        this.$store.commit('setNotice', {})
+      }, 2000)
+    },
+    good (postId, index) {
+      const like = {
+        user_id: this.user.id,
+        post_id: postId,
+      }
+      axios.post('/v1/likes', { like })
+      .then(() => {
+        this.posts[index].count++
 
-  fetch ({ store, redirect }) {
-    store.watch(
-      state => state.currentUser,
-      (newUser, oldUser) => {
-        if ( !newUser ) {
-          return redirect('/signin')
+        axios.get('/v1/likes')
+        .then(res => {
+          var newLikeId = res.data.slice(-1)[0].id
+          like.id = newLikeId
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        this.posts[index]['likes'].push(like)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    goodReset (index) {
+      // この投稿に対する自分のいいねのデータを削除する
+      for (var key of this.posts[index]['likes'] ) {
+        if ( key.user_id === this.user.id ) {
+          var likeId = key.id
+          break
         }
       }
-    )
+      axios.delete(`/v1/likes/${likeId}`)
+      .then(() => {
+        // いいねを取り消した配列の要素のデータも一緒に削除
+        for (var key of this.posts[index]['likes'] ) {
+          if ( key.user_id === this.user.id ) {
+            delete key.id
+            delete key.user_id
+            delete key.post_id
+            break
+          }
+        }
+        this.posts[index].count--
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
   },
 }
 </script>
