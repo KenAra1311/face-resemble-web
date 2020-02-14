@@ -7,7 +7,6 @@
     <v-alert
       v-if="notice.status"
       :type="notice.type"
-      class="notice"
     >
       {{ notice.message }}
     </v-alert>
@@ -47,8 +46,7 @@
     <v-app-bar
       :clipped-left="clipped"
       class="pink darken-1"
-      :collapse="!collapseOnScroll"
-      :collapse-on-scroll="collapseOnScroll"
+      dense
       fixed
       app
     >
@@ -129,7 +127,6 @@ export default {
     clipped: true,
     drawer: false,
     miniVariant: false,
-    collapseOnScroll: true,
     right: true,
     title: 'Face-Resemble',
   })
@@ -151,7 +148,10 @@ a {
   color: white;
   font-weight: bold;
 }
-.notice {
+.v-application .warning {
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 10;
   top: 80px;
 }
 </style>
