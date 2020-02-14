@@ -90,6 +90,28 @@
       </v-card>
     </v-dialog>
   </div>
+  <div v-else>
+    <div class="text-center">
+      <h2 class="mt-6">
+        他のユーザが投稿した顔写真やこれから顔写真を投稿したいと思ったあなたは、<br>
+        今すぐサインアップしてこのサービスを楽しんでみてください！！
+      </h2>
+      <v-btn color="primary my-3">
+        <n-link to="/signup" class="top-link">
+          今すぐサインアップする
+        </n-link>
+      </v-btn>
+
+      <h2 class="mt-6">
+        もしもすでにサインアップ（登録）済みならば、サインインしましょう！
+      </h2>
+      <v-btn color="success my-3">
+        <n-link to="/signin" class="top-link">
+          今すぐサインインする
+        </n-link>
+      </v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -236,4 +258,8 @@ export default {
 </script>
 
 <style scoped>
+.top-link {
+  color: white;
+  font-weight: bold;
+}
 </style>
