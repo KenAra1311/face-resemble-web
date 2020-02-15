@@ -1,7 +1,7 @@
 <template>
   <div v-if="user">
     <h1 class="text-align">アカウント情報</h1>
-    <p v-if="error" class="errors">{{error}}</p>
+    <p v-if="error" class="errors">{{ error }}</p>
 
     <v-simple-table>
       <template v-slot:default>
@@ -17,16 +17,6 @@
                 @keypress="setCanSubmit"
               >
             </td>
-            <td>
-              <v-btn
-                :disabled="!pushUserNameChangeButton"
-                color="success"
-                @click="changeUserName"
-                small
-              >
-                変更
-              </v-btn>
-            </td>
           </tr>
           <tr>
             <td>メールアドレス</td>
@@ -39,21 +29,14 @@
                 @keypress="setCanSubmit"
               >
             </td>
-            <td>
-              <v-btn
-                :disabled="!pushUserEmailChangeButton"
-                color="success"
-                @click="changeUserEmail"
-                small
-              >
-                変更
-              </v-btn>
-            </td>
           </tr>
           <tr>
             <td>投稿した顔写真の数</td>
-            <td>{{ user.posts.length }}</td>
-            <td></td>
+            <td>{{ user.posts.length ? user.posts.length : 0 }}</td>
+          </tr>
+          <tr>
+            <td>いいねをもらった数</td>
+            <td>{{ user.like_total_count ? user.like_total_count : 0 }}</td>
           </tr>
         </tbody>
       </template>

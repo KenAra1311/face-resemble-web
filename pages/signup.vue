@@ -6,7 +6,7 @@
   >
 
     <h1 class="text-align">サインアップ</h1>
-    <p v-if="error" class="errors">{{error}}</p>
+    <p v-if="error" class="errors">{{ error }}</p>
 
     <v-text-field
       v-model="name"
