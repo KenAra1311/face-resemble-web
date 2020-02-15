@@ -41,14 +41,14 @@
                 class="pointer"
                 overlap
               >
-                <v-avatar size="126">
+                <v-avatar>
                   <img
                     :src="user.profile_image"
                     :alt="user.name"
                   >
                 </v-avatar>
               </v-badge>
-              <v-avatar v-else>
+              <v-avatar v-else @click="setProfileImage" class="pointer">
                 <v-icon dark>mdi-account-circle</v-icon>
               </v-avatar>
             </td>
@@ -153,11 +153,53 @@ export default {
         })(error.code)
       })
     },
+    setProfileImage () {
+      const widget = cloudinary.createUploadWidget(
+        {
+          cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+          uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET_1,
+          multiple: false,
+        },
+        (error, result) => {
+          if ( !error && result && result.event === "success" ) {
+            // API サーバにデータを渡す
+            this.$store.commit('setLoading', true)
+            const user = {
+              profile_image: result.info.secure_url,
+              file_name: result.info.public_id
+            }
+            axios.put(`/v1/users/${this.user.id}`, { user })
+            .then(() => {
+              this.user.profile_image = result.info.secure_url
+              this.$store.commit('setLoading', false)
+              this.$store.commit('setNotice', {
+                status: true,
+                message: 'プロフィール画像をアップしました',
+                type: 'success',
+              })
+              setTimeout(() => {
+                this.$store.commit('setNotice', {})
+              }, 2000)
+            })
+            .catch(error => {
+              this.$store.commit('setLoading', false)
+              console.log(error)
+            })
+            widget.hide()
+          }
+        }
+      )
+      widget.open()
+    },
     deleteProfileImage () {
       if ( !confirm('プロフィール画像を削除しますか？') ) return
 
+      this.$store.commit('setLoading', true)
       axios.put(`/v1/users/${this.user.id}`, { profile_image: null, file_name: null })
       .then(() => {
+        this.user.profile_image = null
+        this.user.file_name     = null
+        this.$store.commit('setLoading', false)
         this.$store.commit('setNotice', {
           status: true,
           message: 'プロフィール画像を削除しました',
@@ -167,16 +209,23 @@ export default {
           this.$store.commit('setNotice', {})
         }, 2000)
       })
+      .catch(error => {
+        this.$store.commit('setLoading', false)
+        console.log(error)
+      })
     },
     signOut () {
       if ( !confirm('サインアウトしますか？') ) return
 
+      this.$store.commit('setLoading', true)
       firebase.auth().signOut()
       .then(() => {
+        this.$store.commit('setLoading', false)
         this.$store.commit('setUser', null)
         this.$router.push('/signin')
       })
       .catch(error => {
+        this.$store.commit('setLoading', false)
         console.log(error)
       })
     },

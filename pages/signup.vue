@@ -137,7 +137,6 @@ data: () => ({
           cloudName: process.env.CLOUDINARY_CLOUD_NAME,
           uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET_1,
           multiple: false,
-          cropping: true,
         },
         (error, result) => {
           if ( !error && result && result.event === "success" ) {
