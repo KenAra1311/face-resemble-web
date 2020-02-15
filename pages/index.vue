@@ -34,20 +34,22 @@
         </v-list-item-content>
       </v-list-item>
 
-      <dir v-if="post.emotion === null" class="border-animation-blue">
+      <div v-if="post.emotion === null" class="border-animation-blue">
         <v-img
           :src="post.image"
           height="194"
           @click="displayDialog(post.title, post.emotion)"
         ></v-img>
-      </dir>
-      <dir v-else class="border-animation-pink">
+      </div>
+      <div v-else class="border-animation-pink">
         <v-img
           :src="post.image"
           height="194"
           @click="displayDialog(post.title, post.emotion)"
         ></v-img>
-      </dir>
+      </div>
+
+      <v-card-subtitle>{{ post.created }}</v-card-subtitle>
 
       <v-card-text>
         {{ post.content }}
@@ -123,13 +125,15 @@
         </v-list-item-content>
       </v-list-item>
 
-      <dir class="border-animation-pink">
+      <div class="border-animation-pink">
         <v-img
           v-bind:src="require('@/static/sample_01.png')"
           height="194"
           @click="sample1 = true"
         ></v-img>
-      </dir>
+      </div>
+
+      <v-card-subtitle>2020/02/15</v-card-subtitle>
 
       <v-card-text>
         テキストテキストテキストテキストテキスト
@@ -188,13 +192,15 @@
         </v-list-item-content>
       </v-list-item>
 
-      <dir class="border-animation-blue">
+      <div class="border-animation-blue">
         <v-img
           v-bind:src="require('@/static/sample_02.png')"
           height="194"
           @click="sample2 = true"
         ></v-img>
-      </dir>
+      </div>
+
+      <v-card-subtitle>2020/02/15</v-card-subtitle>
 
       <v-card-text>
         テキストテキストテキストテキストテキスト
