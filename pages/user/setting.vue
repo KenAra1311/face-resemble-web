@@ -31,6 +31,29 @@
             </td>
           </tr>
           <tr>
+            <td>プロフィール画像</td>
+            <td>
+              <v-badge
+                v-if="user.profile_image"
+                @click.native="deleteProfileImage"
+                color="error"
+                icon="clear"
+                class="pointer"
+                overlap
+              >
+                <v-avatar size="126">
+                  <img
+                    :src="user.profile_image"
+                    :alt="user.name"
+                  >
+                </v-avatar>
+              </v-badge>
+              <v-avatar v-else>
+                <v-icon dark>mdi-account-circle</v-icon>
+              </v-avatar>
+            </td>
+          </tr>
+          <tr>
             <td>投稿した顔写真の数</td>
             <td>{{ user.posts.length ? user.posts.length : 0 }}</td>
           </tr>
@@ -128,6 +151,21 @@ export default {
               return '※サインアップから時間が経っているので、再度サインアップしてください。'
           }
         })(error.code)
+      })
+    },
+    deleteProfileImage () {
+      if ( !confirm('プロフィール画像を削除しますか？') ) return
+
+      axios.put(`/v1/users/${this.user.id}`, { profile_image: null, file_name: null })
+      .then(() => {
+        this.$store.commit('setNotice', {
+          status: true,
+          message: 'プロフィール画像を削除しました',
+          type: 'success',
+        })
+        setTimeout(() => {
+          this.$store.commit('setNotice', {})
+        }, 2000)
       })
     },
     signOut () {

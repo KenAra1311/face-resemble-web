@@ -143,6 +143,9 @@ a {
   text-decoration: none;
 }
 
+.pointer {
+  cursor: pointer;
+}
 .top-link {
   color: white;
   font-weight: bold;
