@@ -42,11 +42,20 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-img
-            :src="post.image"
-            height="194"
-            @click="displayDialog(post.title, post.emotion)"
-          ></v-img>
+          <dir v-if="post.emotion === null" class="border-animation-blue">
+            <v-img
+              :src="post.image"
+              height="194"
+              @click="displayDialog(post.title, post.emotion)"
+            ></v-img>
+          </dir>
+          <dir v-else class="border-animation-pink">
+            <v-img
+              :src="post.image"
+              height="194"
+              @click="displayDialog(post.title, post.emotion)"
+            ></v-img>
+          </dir>
 
           <v-card-text>
             {{ post.content }}
@@ -97,11 +106,13 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-img
-              :src="post.image"
-              height="194"
-              @click="displayDialog(post.title, post.emotion)"
-            ></v-img>
+            <dir v-if="post.emotion" class="border-animation-pink">
+              <v-img
+                :src="post.image"
+                height="194"
+                @click="displayDialog(post.title, post.emotion)"
+              ></v-img>
+            </dir>
 
             <v-card-text>
               {{ post.content }}
@@ -227,4 +238,30 @@ export default {
 </script>
 
 <style scoped>
+@keyframes borderFlashing-pink {
+  0% {
+    border: .8px solid #D81B60;
+  }
+  100% {
+    border: .8px solid transparent;
+  }
+}
+.border-animation-pink {
+  cursor: pointer;
+  border-right: .8px solid #D81B60;
+  animation: borderFlashing-pink 1s ease infinite alternate;
+}
+@keyframes borderFlashing-blue {
+  0% {
+    border: .8px solid #1E88E5;
+  }
+  100% {
+    border: .8px solid transparent;
+  }
+}
+.border-animation-blue {
+  cursor: pointer;
+  border-right: .8px solid #1E88E5;
+  animation: borderFlashing-blue 1s ease infinite alternate;
+}
 </style>

@@ -34,7 +34,14 @@
         </v-list-item-content>
       </v-list-item>
 
-      <dir class="border-animation">
+      <dir v-if="post.emotion === null" class="border-animation-blue">
+        <v-img
+          :src="post.image"
+          height="194"
+          @click="displayDialog(post.title, post.emotion)"
+        ></v-img>
+      </dir>
+      <dir v-else class="border-animation-pink">
         <v-img
           :src="post.image"
           height="194"
@@ -264,46 +271,30 @@ export default {
   color: white;
   font-weight: bold;
 }
-.border-animation {
+@keyframes borderFlashing-pink {
+  0% {
+    border: .8px solid #D81B60;
+  }
+  100% {
+    border: .8px solid transparent;
+  }
+}
+.border-animation-pink {
   cursor: pointer;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  outline: none;
-  transition: all .2s;
+  border-right: .8px solid #D81B60;
+  animation: borderFlashing-pink 1s ease infinite alternate;
 }
-.border-animation::before,
-.border-animation::after {
-  position: absolute;
-  z-index: 2;
-  content: '';
-  width: 0;
-  height: 0;
-  border: .8px solid transparent;
+@keyframes borderFlashing-blue {
+  0% {
+    border: .8px solid #1E88E5;
+  }
+  100% {
+    border: .8px solid transparent;
+  }
 }
-.border-animation::before {
-  left: 0px;
-}
-.border-animation::after {
-  bottom: 0px;
-  right: 0px;
-}
-.border-animation:hover {
-  color: #3be5ae;
-}
-.border-animation:hover::before,
-.border-animation:hover::after {
-  width: 100%;
-  height: 100%;
-}
-.border-animation:hover::before {
-  border-bottom-color: #D81B60;
-  border-left-color: #D81B60;
-  transition: height .6s, width .6s .6s;
-}
-.border-animation:hover::after {
-  border-top-color: #D81B60;
-  border-right-color: #D81B60;
-  transition: height .6s, width .6s .6s;
+.border-animation-blue {
+  cursor: pointer;
+  border-right: .8px solid #1E88E5;
+  animation: borderFlashing-blue 1s ease infinite alternate;
 }
 </style>
