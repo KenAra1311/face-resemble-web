@@ -34,11 +34,20 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-img
-        :src="post.image"
-        height="194"
-        @click="displayDialog(post.title, post.emotion)"
-      ></v-img>
+      <dir v-if="post.emotion === null" class="border-animation-blue">
+        <v-img
+          :src="post.image"
+          height="194"
+          @click="displayDialog(post.title, post.emotion)"
+        ></v-img>
+      </dir>
+      <dir v-else class="border-animation-pink">
+        <v-img
+          :src="post.image"
+          height="194"
+          @click="displayDialog(post.title, post.emotion)"
+        ></v-img>
+      </dir>
 
       <v-card-text>
         {{ post.content }}
@@ -89,6 +98,111 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+  </div>
+
+  <div v-else>
+    <div class="text-center">
+      <h2 class="mt-6">
+        「Face-Resemble」では、投稿した顔写真の感情を読み取ってくれます！
+      </h2>
+      <p class="my-5">感情を読み取ることができたとき</p>
+    </div>
+    <v-card
+      max-width="344"
+      class="mx-auto my-5"
+    >
+      <v-list-item>
+        <v-list-item-avatar color="grey">
+          <v-icon>
+            mdi-account-circle
+          </v-icon>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title class="headline">タイトル</v-list-item-title>
+          <v-list-item-subtitle>by ユーザネーム</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <dir class="border-animation-pink">
+        <v-img
+          v-bind:src="require('@/static/sample_01.png')"
+          height="194"
+        ></v-img>
+      </dir>
+
+      <v-card-text>
+        テキストテキストテキストテキストテキスト
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer />
+        <v-btn icon>
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+        0
+      </v-card-actions>
+    </v-card>
+
+    <div class="text-center">
+      <p class="my-5">感情を読み取れなかったとき</p>
+    </div>
+
+    <v-card
+      max-width="344"
+      class="mx-auto my-5"
+    >
+      <v-list-item>
+        <v-list-item-avatar color="grey">
+          <v-icon>
+            mdi-account-circle
+          </v-icon>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title class="headline">タイトル</v-list-item-title>
+          <v-list-item-subtitle>by ユーザネーム</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <dir class="border-animation-blue">
+        <v-img
+          v-bind:src="require('@/static/sample_02.png')"
+          height="194"
+        ></v-img>
+      </dir>
+
+      <v-card-text>
+        テキストテキストテキストテキストテキスト
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer />
+        <v-btn icon>
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+        0
+      </v-card-actions>
+    </v-card>
+
+    <div class="text-center">
+      <h2 class="mt-6">
+        他のユーザが投稿した顔写真やこれから顔写真を投稿したいと思ったあなたは、<br>
+        今すぐサインアップしてこのサービスを楽しんでみてください！！
+      </h2>
+      <v-btn color="primary my-3">
+        <n-link to="/signup" class="top-link">
+          今すぐサインアップする
+        </n-link>
+      </v-btn>
+
+      <h2 class="mt-6">
+        もしもすでにサインアップ（登録）済みならば、サインインしましょう！
+      </h2>
+      <v-btn color="success my-3">
+        <n-link to="/signin" class="top-link">
+          今すぐサインインする
+        </n-link>
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -236,4 +350,8 @@ export default {
 </script>
 
 <style scoped>
+.top-link {
+  color: white;
+  font-weight: bold;
+}
 </style>

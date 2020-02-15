@@ -42,11 +42,20 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-img
-            :src="post.image"
-            height="194"
-            @click="displayDialog(post.title, post.emotion)"
-          ></v-img>
+          <dir v-if="post.emotion === null" class="border-animation-blue">
+            <v-img
+              :src="post.image"
+              height="194"
+              @click="displayDialog(post.title, post.emotion)"
+            ></v-img>
+          </dir>
+          <dir v-else class="border-animation-pink">
+            <v-img
+              :src="post.image"
+              height="194"
+              @click="displayDialog(post.title, post.emotion)"
+            ></v-img>
+          </dir>
 
           <v-card-text>
             {{ post.content }}
@@ -97,11 +106,13 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-img
-              :src="post.image"
-              height="194"
-              @click="displayDialog(post.title, post.emotion)"
-            ></v-img>
+            <dir v-if="post.emotion" class="border-animation-pink">
+              <v-img
+                :src="post.image"
+                height="194"
+                @click="displayDialog(post.title, post.emotion)"
+              ></v-img>
+            </dir>
 
             <v-card-text>
               {{ post.content }}

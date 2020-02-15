@@ -139,7 +139,6 @@ export default {
   -webkit-user-select: none;
   -ms-user-select: none;
 }
-
 a {
   text-decoration: none;
 }
@@ -147,11 +146,44 @@ a {
 .top-link {
   color: white;
   font-weight: bold;
+  font-family: "Reenie Beanie";
+}
+.v-application .success {
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 10;
+  top: 80px;
 }
 .v-application .warning {
   position: -webkit-sticky;
   position: sticky;
   z-index: 10;
   top: 80px;
+}
+@keyframes borderFlashing-pink {
+  0% {
+    border: .8px solid #D81B60;
+  }
+  100% {
+    border: .8px solid transparent;
+  }
+}
+.border-animation-pink {
+  cursor: pointer;
+  border-right: .8px solid #D81B60;
+  animation: borderFlashing-pink 1s ease infinite alternate;
+}
+@keyframes borderFlashing-blue {
+  0% {
+    border: .8px solid #1E88E5;
+  }
+  100% {
+    border: .8px solid transparent;
+  }
+}
+.border-animation-blue {
+  cursor: pointer;
+  border-right: .8px solid #1E88E5;
+  animation: borderFlashing-blue 1s ease infinite alternate;
 }
 </style>
