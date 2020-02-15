@@ -1,7 +1,7 @@
 <template>
   <div v-if="user">
     <h1 class="text-align">アカウント情報</h1>
-    <p v-if="error" class="errors">{{error}}</p>
+    <p v-if="error" class="errors">{{ error }}</p>
 
     <v-simple-table>
       <template v-slot:default>
@@ -17,16 +17,6 @@
                 @keypress="setCanSubmit"
               >
             </td>
-            <td>
-              <v-btn
-                :disabled="!pushUserNameChangeButton"
-                color="success"
-                @click="changeUserName"
-                small
-              >
-                変更
-              </v-btn>
-            </td>
           </tr>
           <tr>
             <td>メールアドレス</td>
@@ -39,21 +29,37 @@
                 @keypress="setCanSubmit"
               >
             </td>
+          </tr>
+          <tr>
+            <td>プロフィール画像</td>
             <td>
-              <v-btn
-                :disabled="!pushUserEmailChangeButton"
-                color="success"
-                @click="changeUserEmail"
-                small
+              <v-badge
+                v-if="user.profile_image"
+                @click.native="deleteProfileImage"
+                color="error"
+                icon="clear"
+                class="pointer"
+                overlap
               >
-                変更
-              </v-btn>
+                <v-avatar>
+                  <img
+                    :src="user.profile_image"
+                    :alt="user.name"
+                  >
+                </v-avatar>
+              </v-badge>
+              <v-avatar v-else @click="setProfileImage" class="pointer">
+                <v-icon dark>mdi-account-circle</v-icon>
+              </v-avatar>
             </td>
           </tr>
           <tr>
             <td>投稿した顔写真の数</td>
-            <td>{{ user.posts.length }}</td>
-            <td></td>
+            <td>{{ user.posts.length ? user.posts.length : 0 }}</td>
+          </tr>
+          <tr>
+            <td>いいねをもらった数</td>
+            <td>{{ user.like_total_count ? user.like_total_count : 0 }}</td>
           </tr>
         </tbody>
       </template>
@@ -147,15 +153,79 @@ export default {
         })(error.code)
       })
     },
+    setProfileImage () {
+      const widget = cloudinary.createUploadWidget(
+        {
+          cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+          uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET_1,
+          multiple: false,
+        },
+        (error, result) => {
+          if ( !error && result && result.event === "success" ) {
+            // API サーバにデータを渡す
+            this.$store.commit('setLoading', true)
+            const user = {
+              profile_image: result.info.secure_url,
+              file_name: result.info.public_id
+            }
+            axios.put(`/v1/users/${this.user.id}`, { user })
+            .then(() => {
+              this.user.profile_image = result.info.secure_url
+              this.$store.commit('setLoading', false)
+              this.$store.commit('setNotice', {
+                status: true,
+                message: 'プロフィール画像をアップしました',
+                type: 'success',
+              })
+              setTimeout(() => {
+                this.$store.commit('setNotice', {})
+              }, 2000)
+            })
+            .catch(error => {
+              this.$store.commit('setLoading', false)
+              console.log(error)
+            })
+            widget.hide()
+          }
+        }
+      )
+      widget.open()
+    },
+    deleteProfileImage () {
+      if ( !confirm('プロフィール画像を削除しますか？') ) return
+
+      this.$store.commit('setLoading', true)
+      axios.put(`/v1/users/${this.user.id}`, { profile_image: null, file_name: null })
+      .then(() => {
+        this.user.profile_image = null
+        this.user.file_name     = null
+        this.$store.commit('setLoading', false)
+        this.$store.commit('setNotice', {
+          status: true,
+          message: 'プロフィール画像を削除しました',
+          type: 'success',
+        })
+        setTimeout(() => {
+          this.$store.commit('setNotice', {})
+        }, 2000)
+      })
+      .catch(error => {
+        this.$store.commit('setLoading', false)
+        console.log(error)
+      })
+    },
     signOut () {
       if ( !confirm('サインアウトしますか？') ) return
 
+      this.$store.commit('setLoading', true)
       firebase.auth().signOut()
       .then(() => {
+        this.$store.commit('setLoading', false)
         this.$store.commit('setUser', null)
         this.$router.push('/signin')
       })
       .catch(error => {
+        this.$store.commit('setLoading', false)
         console.log(error)
       })
     },

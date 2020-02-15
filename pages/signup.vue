@@ -6,7 +6,7 @@
   >
 
     <h1 class="text-align">サインアップ</h1>
-    <p v-if="error" class="errors">{{error}}</p>
+    <p v-if="error" class="errors">{{ error }}</p>
 
     <v-text-field
       v-model="name"
@@ -137,7 +137,6 @@ data: () => ({
           cloudName: process.env.CLOUDINARY_CLOUD_NAME,
           uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET_1,
           multiple: false,
-          cropping: true,
         },
         (error, result) => {
           if ( !error && result && result.event === "success" ) {
