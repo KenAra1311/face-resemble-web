@@ -42,10 +42,10 @@
                 overlap
               >
                 <v-avatar>
-                  <img
+                  <v-img
                     :src="user.profile_image"
                     :alt="user.name"
-                  >
+                  ></v-img>
                 </v-avatar>
               </v-badge>
               <v-avatar v-else @click="setProfileImage" class="pointer">
