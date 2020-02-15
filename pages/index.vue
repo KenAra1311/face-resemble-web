@@ -99,7 +99,90 @@
       </v-card>
     </v-dialog>
   </div>
+
   <div v-else>
+    <div class="text-center">
+      <h2 class="mt-6">
+        「Face-Resemble」では、投稿した顔写真の感情を読み取ってくれます！
+      </h2>
+      <p class="my-5">感情を読み取ることができたとき</p>
+    </div>
+    <v-card
+      max-width="344"
+      class="mx-auto my-5"
+    >
+      <v-list-item>
+        <v-list-item-avatar color="grey">
+          <v-icon>
+            mdi-account-circle
+          </v-icon>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title class="headline">タイトル</v-list-item-title>
+          <v-list-item-subtitle>by ユーザネーム</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <dir class="border-animation-pink">
+        <v-img
+          v-bind:src="require('@/static/sample_01.png')"
+          height="194"
+        ></v-img>
+      </dir>
+
+      <v-card-text>
+        テキストテキストテキストテキストテキスト
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer />
+        <v-btn icon>
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+        0
+      </v-card-actions>
+    </v-card>
+
+    <div class="text-center">
+      <p class="my-5">感情を読み取れなかったとき</p>
+    </div>
+
+    <v-card
+      max-width="344"
+      class="mx-auto my-5"
+    >
+      <v-list-item>
+        <v-list-item-avatar color="grey">
+          <v-icon>
+            mdi-account-circle
+          </v-icon>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title class="headline">タイトル</v-list-item-title>
+          <v-list-item-subtitle>by ユーザネーム</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <dir class="border-animation-blue">
+        <v-img
+          v-bind:src="require('@/static/sample_02.png')"
+          height="194"
+        ></v-img>
+      </dir>
+
+      <v-card-text>
+        テキストテキストテキストテキストテキスト
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer />
+        <v-btn icon>
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+        0
+      </v-card-actions>
+    </v-card>
+
     <div class="text-center">
       <h2 class="mt-6">
         他のユーザが投稿した顔写真やこれから顔写真を投稿したいと思ったあなたは、<br>
@@ -270,31 +353,5 @@ export default {
 .top-link {
   color: white;
   font-weight: bold;
-}
-@keyframes borderFlashing-pink {
-  0% {
-    border: .8px solid #D81B60;
-  }
-  100% {
-    border: .8px solid transparent;
-  }
-}
-.border-animation-pink {
-  cursor: pointer;
-  border-right: .8px solid #D81B60;
-  animation: borderFlashing-pink 1s ease infinite alternate;
-}
-@keyframes borderFlashing-blue {
-  0% {
-    border: .8px solid #1E88E5;
-  }
-  100% {
-    border: .8px solid transparent;
-  }
-}
-.border-animation-blue {
-  cursor: pointer;
-  border-right: .8px solid #1E88E5;
-  animation: borderFlashing-blue 1s ease infinite alternate;
 }
 </style>
