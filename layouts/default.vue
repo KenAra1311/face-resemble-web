@@ -139,7 +139,6 @@ export default {
   -webkit-user-select: none;
   -ms-user-select: none;
 }
-
 a {
   text-decoration: none;
 }
@@ -147,6 +146,7 @@ a {
 .top-link {
   color: white;
   font-weight: bold;
+  font-family: "Reenie Beanie";
 }
 .v-application .success {
   position: -webkit-sticky;

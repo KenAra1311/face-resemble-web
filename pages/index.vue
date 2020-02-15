@@ -34,11 +34,13 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-img
-        :src="post.image"
-        height="194"
-        @click="displayDialog(post.title, post.emotion)"
-      ></v-img>
+      <dir class="border-animation">
+        <v-img
+          :src="post.image"
+          height="194"
+          @click="displayDialog(post.title, post.emotion)"
+        ></v-img>
+      </dir>
 
       <v-card-text>
         {{ post.content }}
@@ -261,5 +263,47 @@ export default {
 .top-link {
   color: white;
   font-weight: bold;
+}
+.border-animation {
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  transition: all .2s;
+}
+.border-animation::before,
+.border-animation::after {
+  position: absolute;
+  z-index: 2;
+  content: '';
+  width: 0;
+  height: 0;
+  border: .8px solid transparent;
+}
+.border-animation::before {
+  left: 0px;
+}
+.border-animation::after {
+  bottom: 0px;
+  right: 0px;
+}
+.border-animation:hover {
+  color: #3be5ae;
+}
+.border-animation:hover::before,
+.border-animation:hover::after {
+  width: 100%;
+  height: 100%;
+}
+.border-animation:hover::before {
+  border-bottom-color: #D81B60;
+  border-left-color: #D81B60;
+  transition: height .6s, width .6s .6s;
+}
+.border-animation:hover::after {
+  border-top-color: #D81B60;
+  border-right-color: #D81B60;
+  transition: height .6s, width .6s .6s;
 }
 </style>
