@@ -142,6 +142,7 @@ input, textarea {
  -webkit-user-select : auto;
 }
 
+/* 共通CSS */
 .pointer {
   cursor: pointer;
 }
@@ -150,6 +151,7 @@ input, textarea {
   font-weight: bold;
   font-family: "Reenie Beanie";
 }
+/* ユーザへのメッセージ */
 .v-application .success {
   position: -webkit-sticky;
   position: sticky;
@@ -162,6 +164,7 @@ input, textarea {
   z-index: 10;
   top: 80px;
 }
+/* 画像の枠 */
 @keyframes borderFlashing-pink {
   0% {
     border: 1.5px solid #D81B60;

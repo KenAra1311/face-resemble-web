@@ -24,7 +24,7 @@
             v-if="post.user.profile_image"
             :src="post.user.profile_image"
           ></v-img>
-          <v-icon v-if="!post.user.profile_image">
+          <v-icon v-else>
             mdi-account-circle
           </v-icon>
         </v-list-item-avatar>
