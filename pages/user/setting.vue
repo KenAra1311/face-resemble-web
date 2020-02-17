@@ -1,6 +1,6 @@
 <template>
   <div v-if="user">
-    <h1 class="text-align">アカウント情報</h1>
+    <h1 class="text-align">アカウント情報確認・変更</h1>
     <p v-if="error" class="errors">{{ error }}</p>
 
     <v-simple-table>

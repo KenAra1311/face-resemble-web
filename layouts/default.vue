@@ -54,8 +54,21 @@
       <n-link to="/">
         <v-toolbar-title v-text="title" class="top-link" title="トップページ" />
       </n-link>
+
       <v-spacer />
-      <n-link v-if="user" to="/user/setting" title="アカウント情報ページ">
+
+      <n-link v-if="user" :to="'/user/' + user.id" title="自分のアカウント画面">
+        <v-list-item-avatar color="grey">
+          <v-img
+            v-if="user.profile_image"
+            :src="user.profile_image"
+          ></v-img>
+          <v-icon v-else>
+            mdi-account-circle
+          </v-icon>
+        </v-list-item-avatar>
+      </n-link>
+      <n-link v-if="user" to="/user/setting" title="アカウント変更ページ">
         <v-icon>settings</v-icon>
       </n-link>
     </v-app-bar>
