@@ -52,14 +52,10 @@
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <n-link to="/">
-        <v-toolbar-title v-text="title" class="top-link" />
+        <v-toolbar-title v-text="title" class="top-link" title="トップページ" />
       </n-link>
       <v-spacer />
-      <n-link
-        v-if="user"
-        to="/user/setting"
-        title="ユーザ情報を変更する"
-      >
+      <n-link v-if="user" to="/user/setting" title="アカウント情報ページ">
         <v-icon>settings</v-icon>
       </n-link>
     </v-app-bar>
@@ -165,28 +161,28 @@ a {
 }
 @keyframes borderFlashing-pink {
   0% {
-    border: .8px solid #D81B60;
+    border: 1.5px solid #D81B60;
   }
   100% {
-    border: .8px solid transparent;
+    border: 1.5px solid transparent;
   }
 }
 .border-animation-pink {
   cursor: pointer;
-  border-right: .8px solid #D81B60;
+  border: 1.5px solid #D81B60;
   animation: borderFlashing-pink 1s ease infinite alternate;
 }
 @keyframes borderFlashing-blue {
   0% {
-    border: .8px solid #1E88E5;
+    border: 1.5px solid #1E88E5;
   }
   100% {
-    border: .8px solid transparent;
+    border: 1.5px solid transparent;
   }
 }
 .border-animation-blue {
   cursor: pointer;
-  border-right: .8px solid #1E88E5;
+  border: 1.5px solid #1E88E5;
   animation: borderFlashing-blue 1s ease infinite alternate;
 }
 </style>

@@ -42,10 +42,10 @@
                 overlap
               >
                 <v-avatar>
-                  <img
+                  <v-img
                     :src="user.profile_image"
                     :alt="user.name"
-                  >
+                  ></v-img>
                 </v-avatar>
               </v-badge>
               <v-avatar v-else @click="setProfileImage" class="pointer">
@@ -68,7 +68,12 @@
     <v-row class="text-align">
       <v-col class="text-center" cols="12" sm="12">
         <div class="my-2">
-          <v-btn large color="error" @click="signOut">サインアウト</v-btn>
+          <v-btn color="error" @click="signOut">サインアウト</v-btn>
+        </div>
+      </v-col>
+      <v-col class="text-center" cols="12" sm="12">
+        <div class="my-2">
+          <v-btn color="purple" @click="deleteUser">ユーザを削除する</v-btn>
         </div>
       </v-col>
     </v-row>
@@ -227,6 +232,33 @@ export default {
       .catch(error => {
         this.$store.commit('setLoading', false)
         console.log(error)
+      })
+    },
+    deleteUser () {
+      if ( !confirm('本当にユーザを削除しますか？') ) return
+      if ( !confirm('このユーザで投稿した顔写真なども削除されますがよろしいですか？') ) return
+
+      this.$store.commit('setLoading', true)
+      firebase.auth().currentUser.delete()
+      .then(() => {
+        axios.delete(`/v1/users/${this.user.id}`)
+        .then(() => {
+          this.$store.commit('setLoading', false)
+          this.$router.push('/')
+        })
+        .catch(error => {
+          this.$store.commit('setLoading', false)
+          console.log(error)
+        })
+      })
+      .catch(error => {
+        this.$store.commit('setLoading', false)
+        this.error = (code => {
+          switch ( code ) {
+            default:
+              return '※サインアップから時間が経っているので、再度サインアップしてください。'
+          }
+        })(error.code)
       })
     },
   },

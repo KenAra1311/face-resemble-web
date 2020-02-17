@@ -11,6 +11,7 @@
         <v-icon
           small
           @click="deletePost(post.id, post.title, index)"
+          color="error"
           title="投稿を削除する"
         >
           delete
