@@ -20,6 +20,7 @@
               small
               @click="deletePost(post.id, post.title, index)"
               title="投稿を削除する"
+              color="red"
             >
               delete
             </v-icon>
@@ -84,6 +85,7 @@
                 small
                 @click="deletePost(post.id, post.title, index)"
                 title="投稿を削除する"
+                color="red"
               >
                 delete
               </v-icon>
