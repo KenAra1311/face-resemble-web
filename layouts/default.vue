@@ -138,6 +138,9 @@ export default {
 a {
   text-decoration: none;
 }
+input, textarea {
+ -webkit-user-select : auto;
+}
 
 .pointer {
   cursor: pointer;
