@@ -17,6 +17,7 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="headline">{{ userData.name }}</v-list-item-title>
+            <v-list-item-subtitle>アカウント作成日：{{ userData.created }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-card>
