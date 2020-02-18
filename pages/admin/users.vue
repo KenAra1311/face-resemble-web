@@ -26,7 +26,7 @@
                   :alt="user.name"
                 ></v-img>
               </v-avatar>
-              <v-avatar v-else @click="setProfileImage" class="pointer">
+              <v-avatar v-else class="pointer">
                 <v-icon dark>mdi-account-circle</v-icon>
               </v-avatar>
             </td>
@@ -35,8 +35,8 @@
             <td>{{ user.admin ? 'あり' : 'なし' }}</td>
             <td>{{ user.created }}</td>
             <td>{{ user.posts.length }}</td>
-            <td>{{ user.like_total_count }}</td>
-            <td>{{ user.likes.length }}</td>
+            <td>{{ user.like_total_count ? user.like_total_count : 0 }}</td>
+            <td>{{ user.likes ? user.likes.length : 0 }}</td>
           </tr>
         </tbody>
       </template>
