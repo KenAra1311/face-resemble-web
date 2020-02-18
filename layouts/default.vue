@@ -68,9 +68,6 @@
           </v-icon>
         </v-list-item-avatar>
       </n-link>
-      <n-link v-if="user" to="/user/setting" title="アカウント変更ページ">
-        <v-icon>settings</v-icon>
-      </n-link>
     </v-app-bar>
 
     <v-content>
@@ -109,9 +106,9 @@ export default {
             to: '/post/create'
           },
           {
-            icon: 'tag_faces',
-            title: 'マイページ',
-            to: '/user'
+            icon: 'settings',
+            title: 'アカウント情報',
+            to: '/user/setting'
           }
         ]
       } else {
