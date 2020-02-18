@@ -23,72 +23,151 @@
       </v-card>
 
       <h2 class="text-center my-8" v-if="user.id === userData[0].id">自分が投稿した顔写真一覧</h2>
-      <h2 class="text-center my-8" v-else>このユーザが投稿した顔写真一覧</h2>
+      <h2 class="text-center my-8" v-else>{{ userData[0].name }} さんが投稿した顔写真一覧</h2>
 
-      <v-card
-        max-width="344"
-        class="mx-auto my-5"
-        v-for="(post, index) in userData[0].posts"
-        v-bind:key="index"
+      <v-tabs
+        background-color="deep-purple darken-4"
+        grow
       >
-        <v-card-actions v-if="user.id === userData[0].id">
-          <v-spacer></v-spacer>
-          <v-icon
-            small
-            @click="deletePost(post.id, post.title, index)"
-            color="error"
-            title="投稿を削除する"
+        <v-tab>投稿した顔写真</v-tab>
+        <v-tab>感情が認識された顔写真</v-tab>
+
+        <v-tab-item>
+          <v-card
+            max-width="344"
+            class="mx-auto"
+            v-for="(post, index) in postData"
+            v-bind:key="index"
           >
-            delete
-          </v-icon>
-        </v-card-actions>
+            <v-card-actions v-if="user.id === post.user.id">
+              <v-spacer />
+              <v-icon
+                small
+                @click="deletePost(post.id, post.title, index)"
+                title="投稿を削除する"
+                color="red"
+              >
+                delete
+              </v-icon>
+            </v-card-actions>
 
-        <v-list-item>
-          <v-list-item-avatar color="grey">
-            <v-img
-              v-if="userData[0].profile_image"
-              :src="userData[0].profile_image"
-            ></v-img>
-            <v-icon v-else>
-              mdi-account-circle
-            </v-icon>
-          </v-list-item-avatar>
+            <v-list-item>
+              <v-list-item-avatar color="grey">
+                <v-img
+                  v-if="post.user.profile_image"
+                  :src="post.user.profile_image"
+                ></v-img>
+                <v-icon v-if="!post.user.profile_image">
+                  mdi-account-circle
+                </v-icon>
+              </v-list-item-avatar>
 
-          <v-list-item-content>
-            <v-list-item-title class="headline">{{ post.title }}</v-list-item-title>
-            <v-list-item-subtitle>by {{ userData[0].name }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="headline">{{ post.title }}</v-list-item-title>
+                <v-list-item-subtitle>by {{ post.user.name }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
 
-        <div v-if="post.emotion === null" class="border-animation-blue">
-          <v-img
-            :src="post.image"
-            height="194"
-            @click="displayDialog(post.title, post.emotion)"
-          ></v-img>
-        </div>
-        <div v-else class="border-animation-pink">
-          <v-img
-            :src="post.image"
-            height="194"
-            @click="displayDialog(post.title, post.emotion)"
-          ></v-img>
-        </div>
+            <dir v-if="post.emotion === null" class="border-animation-blue">
+              <v-img
+                :src="post.image"
+                height="194"
+                @click="displayDialog(post.title, post.emotion)"
+              ></v-img>
+            </dir>
+            <dir v-else class="border-animation-pink">
+              <v-img
+                :src="post.image"
+                height="194"
+                @click="displayDialog(post.title, post.emotion)"
+              ></v-img>
+            </dir>
 
-        <v-card-subtitle>{{ post.created }}</v-card-subtitle>
+            <v-card-text>
+              {{ post.content }}
+            </v-card-text>
 
-        <v-card-text>
-          {{ post.content }}
-        </v-card-text>
+            <v-card-actions>
+              <v-spacer />
+              <div v-if="user.id === post.user.id">
+                <v-btn @click="canNotLike" icon>
+                  <v-icon color="purple">mdi-heart</v-icon>
+                </v-btn>
+              </div>
+              <div v-else-if="post.likes.some(like => like.user_id === user.id)">
+                <v-btn @click="goodReset(index)" icon>
+                  <v-icon color="pink">mdi-heart</v-icon>
+                </v-btn>
+              </div>
+              <div v-else>
+                <v-btn @click="good(post.id, index)" icon>
+                  <v-icon>mdi-heart</v-icon>
+                </v-btn>
+              </div>
+              {{ post.count ? post.count : 0 }}
+            </v-card-actions>
+          </v-card>
+        </v-tab-item>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon color="purple">mdi-heart</v-icon>
-          </v-btn>
-          {{ post.count ? post.count : 0 }}
-        </v-card-actions>
-      </v-card>
+        <v-tab-item>
+          <v-card
+            max-width="344"
+            class="mx-auto"
+            v-for="(post, index) in postData"
+            v-bind:key="index"
+          >
+            <div v-if="post.emotion">
+              <v-card-actions v-if="user.id === post.user.id">
+                <v-spacer />
+                <v-icon
+                  small
+                  @click="deletePost(post.id, post.title, index)"
+                  title="投稿を削除する"
+                  color="red"
+                >
+                  delete
+                </v-icon>
+              </v-card-actions>
+
+              <v-list-item>
+                <v-list-item-avatar color="grey">
+                  <v-img
+                    v-if="post.user.profile_image"
+                    :src="post.user.profile_image"
+                  ></v-img>
+                  <v-icon v-if="!post.user.profile_image">
+                    mdi-account-circle
+                  </v-icon>
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                  <v-list-item-title class="headline">{{ post.title }}</v-list-item-title>
+                  <v-list-item-subtitle>by {{ post.user.name }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+
+              <dir v-if="post.emotion" class="border-animation-pink">
+                <v-img
+                  :src="post.image"
+                  height="194"
+                  @click="displayDialog(post.title, post.emotion)"
+                ></v-img>
+              </dir>
+
+              <v-card-text>
+                {{ post.content }}
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click="canNotLike" icon>
+                  <v-icon color="purple">mdi-heart</v-icon>
+                </v-btn>
+              </v-card-actions>
+            </div>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
 
       <v-dialog
         v-model="dialog"
@@ -134,8 +213,10 @@ export default {
 
   async asyncData ({ params }) {
     const { data: userData } = await axios.get(`/v1/users?id=${params.id}`)
+    const { data: postData } = await axios.get(`/v1/posts?user_id=${params.id}`)
     return {
-      userData
+      userData,
+      postData,
     }
   },
 
@@ -158,7 +239,7 @@ export default {
 
       axios.delete(`/v1/posts/${postId}`)
       .then(() => {
-        this.userData[0].posts.splice(index, 1);
+        this.postData.splice(index, 1);
         this.$store.commit('setNotice', {
           status: true,
           message: '投稿を削除しました',
@@ -203,6 +284,64 @@ export default {
           this.dialogEmotion = '感情を読み取れませんでした…'
       }
       this.dialog = true
+    },
+    canNotLike () {
+      this.$store.commit('setNotice', {
+        status: true,
+        message: '自分の投稿にはいいねできません',
+        type: 'warning',
+      })
+      setTimeout(() => {
+        this.$store.commit('setNotice', {})
+      }, 2000)
+    },
+    good (postId, index) {
+      const like = {
+        user_id: this.user.id,
+        post_id: postId,
+      }
+      axios.post('/v1/likes', { like })
+      .then(() => {
+        this.postData[index].count++
+
+        axios.get('/v1/likes')
+        .then(res => {
+          var newLikeId = res.data.slice(-1)[0].id
+          like.id = newLikeId
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        this.postData[index]['likes'].push(like)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    goodReset (index) {
+      // この投稿に対する自分のいいねのデータを削除する
+      for (var key of this.postData[index]['likes'] ) {
+        if ( key.user_id === this.user.id ) {
+          var likeId = key.id
+          break
+        }
+      }
+      axios.delete(`/v1/likes/${likeId}`)
+      .then(() => {
+        // いいねを取り消した配列の要素のデータも一緒に削除
+        for (var key of this.postData[index]['likes'] ) {
+          if ( key.user_id === this.user.id ) {
+            delete key.id
+            delete key.user_id
+            delete key.post_id
+            break
+          }
+        }
+        this.postData[index].count--
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
   },
 
