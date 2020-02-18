@@ -1,6 +1,6 @@
 <template>
   <div v-if="user">
-    <div v-if="userData">
+    <div v-if="userData[0]">
       <v-card
         max-width="344"
         class="mx-auto my-3"
