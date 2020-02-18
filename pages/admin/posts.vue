@@ -14,6 +14,7 @@
             <th class="text-left">本文</th>
             <th class="text-left">いいねの数</th>
             <th class="text-left">投稿日</th>
+            <th class="text-left">削除</th>
           </tr>
         </thead>
         <tbody>
@@ -27,6 +28,13 @@
             <td>{{ post.content ? post.content : 'なし' }}</td>
             <td>{{ post.count ? post.count : 0 }}</td>
             <td>{{ post.created }}</td>
+            <td>
+              <v-icon
+                @click="deletePost(post.id, post.title, i)"
+                class="pointer"
+                color="red"
+              >delete</v-icon>
+            </td>
           </tr>
         </tbody>
       </template>
@@ -66,6 +74,29 @@ export default {
     ],
     search: '',
   }),
+
+  methods: {
+    deletePost (postId, postTitle, index) {
+      // 削除の確認
+      if ( !confirm('本当に「' + postTitle + '」を削除しますか？') ) return
+
+      axios.delete(`/v1/posts/${postId}`)
+      .then(() => {
+        this.posts.splice(index, 1);
+        this.$store.commit('setNotice', {
+          status: true,
+          message: '「' + postTitle + '」を削除しました',
+          type: 'success',
+        })
+        setTimeout(() => {
+          this.$store.commit('setNotice', {})
+        }, 2000)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+  },
 
   fetch ({ store, redirect }) {
     store.watch(
