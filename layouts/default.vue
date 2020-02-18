@@ -54,9 +54,19 @@
       <n-link to="/">
         <v-toolbar-title v-text="title" class="top-link" title="トップページ" />
       </n-link>
+
       <v-spacer />
-      <n-link v-if="user" to="/user/setting" title="アカウント情報ページ">
-        <v-icon>settings</v-icon>
+
+      <n-link v-if="user" :to="'/user/' + user.id" title="自分のアカウント画面">
+        <v-list-item-avatar color="grey">
+          <v-img
+            v-if="user.profile_image"
+            :src="user.profile_image"
+          ></v-img>
+          <v-icon v-else>
+            mdi-account-circle
+          </v-icon>
+        </v-list-item-avatar>
       </n-link>
     </v-app-bar>
 
@@ -96,9 +106,9 @@ export default {
             to: '/post/create'
           },
           {
-            icon: 'tag_faces',
-            title: 'マイページ',
-            to: '/user'
+            icon: 'settings',
+            title: 'アカウント情報',
+            to: '/user/setting'
           }
         ]
       } else {
@@ -138,7 +148,11 @@ export default {
 a {
   text-decoration: none;
 }
+input, textarea {
+ -webkit-user-select : auto;
+}
 
+/* 共通CSS */
 .pointer {
   cursor: pointer;
 }
@@ -147,6 +161,7 @@ a {
   font-weight: bold;
   font-family: "Reenie Beanie";
 }
+/* ユーザへのメッセージ */
 .v-application .success {
   position: -webkit-sticky;
   position: sticky;
@@ -159,6 +174,7 @@ a {
   z-index: 10;
   top: 80px;
 }
+/* 画像の枠 */
 @keyframes borderFlashing-pink {
   0% {
     border: 1.5px solid #D81B60;
