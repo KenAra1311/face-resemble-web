@@ -160,9 +160,22 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn @click="canNotLike" icon>
-                  <v-icon color="purple">mdi-heart</v-icon>
-                </v-btn>
+                <div v-if="user.id === post.user.id">
+                  <v-btn @click="canNotLike" icon>
+                    <v-icon color="purple">mdi-heart</v-icon>
+                  </v-btn>
+                </div>
+                <div v-else-if="post.likes.some(like => like.user_id === user.id)">
+                  <v-btn @click="goodReset(index)" icon>
+                    <v-icon color="pink">mdi-heart</v-icon>
+                  </v-btn>
+                </div>
+                <div v-else>
+                  <v-btn @click="good(post.id, index)" icon>
+                    <v-icon>mdi-heart</v-icon>
+                  </v-btn>
+                </div>
+                {{ post.count ? post.count : 0 }}
               </v-card-actions>
             </div>
           </v-card>
