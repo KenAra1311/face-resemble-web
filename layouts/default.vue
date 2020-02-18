@@ -98,7 +98,7 @@ export default {
       return this.$store.state.topMessage
     },
     items () {
-      if ( this.user ) {
+      if ( this.user && !this.user.admin ) {
         return [
           {
             icon: 'mdi-chart-bubble',
@@ -109,6 +109,24 @@ export default {
             icon: 'settings',
             title: 'アカウント情報',
             to: '/user/setting'
+          },
+        ]
+      } else if ( this.user && this.user.admin ) {
+        return [
+          {
+            icon: 'mdi-chart-bubble',
+            title: '顔写真を投稿',
+            to: '/post/create'
+          },
+          {
+            icon: 'settings',
+            title: 'アカウント情報',
+            to: '/user/setting'
+          },
+          {
+            icon: 'account_circle',
+            title: '管理画面',
+            to: '/admin/'
           }
         ]
       } else {
