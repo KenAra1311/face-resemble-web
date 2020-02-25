@@ -2,6 +2,7 @@
   <div v-if="user && user.admin">
 
     <h2>ユーザ一覧</h2>
+    <v-subheader>※{{ pageSize }} 件ずつ表示中</v-subheader>
 
     <v-simple-table dense>
       <template v-slot:default>
@@ -18,7 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(user, i) in users" :key="i">
+          <tr v-for="(user, i) in displayLists" :key="i">
             <td>
               <v-avatar v-if="user.profile_image">
                 <v-img
@@ -41,6 +42,13 @@
         </tbody>
       </template>
     </v-simple-table>
+
+    <v-pagination
+      v-model="page"
+      :length="length"
+      @input="pageChange"
+      circle
+    ></v-pagination>
   </div>
 </template>
 
@@ -59,7 +67,9 @@ export default {
     // ユーザを全取得
     axios.get('/v1/users')
     .then(res => {
-      this.users = res.data
+      this.users        = res.data
+      this.length       = Math.ceil(this.users.length / this.pageSize)
+      this.displayLists = this.users.slice(0, this.pageSize)
     })
     .catch(error => {
       console.log(error)
@@ -76,7 +86,17 @@ export default {
       { text: 'プロフィール画像', value: 'profile_image' },
     ],
     search: '',
+    page: 1,
+    length: 0,
+    displayLists: [],
+    pageSize: 50,
   }),
+
+  methods: {
+    pageChange (pageNumber) {
+      this.displayLists = this.users.slice(this.pageSize * (pageNumber - 1), this.pageSize * (pageNumber))
+    },
+  },
 
   fetch ({ store, redirect }) {
     store.watch(

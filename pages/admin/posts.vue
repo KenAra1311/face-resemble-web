@@ -2,6 +2,7 @@
   <div v-if="user && user.admin">
 
     <h2>投稿顔写真一覧</h2>
+    <v-subheader>※{{ pageSize }} 件ずつ表示中</v-subheader>
 
     <v-simple-table dense>
       <template v-slot:default>
@@ -18,7 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(post, i) in posts" :key="i">
+          <tr v-for="(post, i) in displayLists" :key="i">
             <td>{{ post.user.name }}</td>
             <td>{{ post.title }}</td>
             <td>
@@ -39,6 +40,13 @@
         </tbody>
       </template>
     </v-simple-table>
+
+    <v-pagination
+      v-model="page"
+      :length="length"
+      @input="pageChange"
+      circle
+    ></v-pagination>
   </div>
 </template>
 
@@ -56,7 +64,9 @@ export default {
     // ユーザを全取得
     axios.get('/v1/posts')
     .then(res => {
-      this.posts = res.data
+      this.posts        = res.data
+      this.length       = Math.ceil(this.posts.length / this.pageSize)
+      this.displayLists = this.posts.slice(0, this.pageSize)
     })
     .catch(error => {
       console.log(error)
@@ -73,6 +83,10 @@ export default {
       { text: 'プロフィール画像', value: 'profile_image' },
     ],
     search: '',
+    page: 1,
+    length: 0,
+    displayLists: [],
+    pageSize: 25,
   }),
 
   methods: {
@@ -95,6 +109,9 @@ export default {
       .catch(error => {
         console.log(error)
       })
+    },
+    pageChange (pageNumber) {
+      this.displayLists = this.posts.slice(this.pageSize * (pageNumber - 1), this.pageSize * (pageNumber))
     },
   },
 
