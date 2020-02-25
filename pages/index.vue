@@ -3,11 +3,11 @@
     <v-card
       max-width="344"
       class="mx-auto my-5"
-      v-for="(post, index) in posts"
+      v-for="(post, index) in displayLists"
       v-bind:key="index"
     >
       <v-card-actions v-if="user.id === post.user.id">
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-icon
           small
           @click="deletePost(post.id, post.title, index)"
@@ -62,7 +62,7 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <div v-if="user.id === post.user.id">
           <v-btn @click="canNotLike" icon>
             <v-icon color="purple">mdi-heart</v-icon>
@@ -82,6 +82,15 @@
 
       </v-card-actions>
     </v-card>
+
+    <div class="text-center">
+      <v-pagination
+        v-model="page"
+        :length="length"
+        @input="pageChange"
+        circle
+      ></v-pagination>
+    </div>
 
     <v-dialog
       v-model="dialog"
@@ -282,7 +291,9 @@ export default {
     // 顔写真の投稿を取得
     axios.get('/v1/posts')
     .then(res => {
-      this.posts = res.data
+      this.posts        = res.data
+      this.length       = Math.ceil(this.posts.length / this.pageSize)
+      this.displayLists = this.posts.slice(0, this.pageSize)
     })
     .catch(error => {
       console.log(error)
@@ -293,6 +304,10 @@ export default {
     sample1: false,
     sample2: false,
     posts: [],
+    page: 1,
+    length: 0,
+    displayLists: [],
+    pageSize: 10,
     dialog: false,
     dialogTitle: '',
     dialogEmotion: '',
@@ -408,6 +423,9 @@ export default {
       .catch(error => {
         console.log(error)
       })
+    },
+    pageChange (pageNumber) {
+      this.displayLists = this.posts.slice(this.pageSize * (pageNumber - 1), this.pageSize * (pageNumber))
     },
   },
 }
