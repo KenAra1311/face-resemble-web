@@ -174,6 +174,7 @@ input, textarea {
 .pointer {
   cursor: pointer;
 }
+/* ナビバーのタイトル */
 .top-link {
   color: white;
   font-weight: bold;
