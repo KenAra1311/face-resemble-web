@@ -21,9 +21,35 @@
           </v-list-item-content>
         </v-list-item>
 
+        <div class="text-center my-4">
+          <v-btn
+            v-if="user.id === userData[0].id"
+            rounded
+            disabled
+          >
+            フォロー
+          </v-btn>
+          <v-btn
+            v-else-if="user.follows.some(follow => follow.follow_id === userData[0].id)"
+            @click="removeUserFollow(userData[0].id)"
+            rounded
+            color="error"
+          >
+            フォローから外す
+          </v-btn>
+          <v-btn
+            v-else
+            @click="followUser(userData[0].id)"
+            rounded
+            color="primary"
+          >
+            フォロー
+          </v-btn>
+        </div>
+
         <v-divider />
 
-        <v-list subheader dense>
+        <v-list subheader dense class="ml-3">
           <v-subheader>フォロー：{{ userData[0].follows.length }}</v-subheader>
           <v-subheader>フォロワー：{{ followData.length }}</v-subheader>
         </v-list>
@@ -251,6 +277,33 @@ export default {
   }),
 
   methods: {
+    followUser (followId) {
+      const follow = {
+        user_id: this.user.id,
+        follow_id: followId,
+      }
+      axios.post('/v1/follows', follow)
+      .then(() => {
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    removeUserFollow (followingUserId) {
+      // この投稿に対する自分のいいねのデータを削除する
+      for (var key of this.user.follows ) {
+        if ( key.follow_id === followingUserId ) {
+          var followId = key.id
+          break
+        }
+      }
+      axios.delete(`/v1/follows/${followId}`)
+      .then(() => {
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
     deletePost (postId, postTitle, index) {
       // 削除の確認
       if ( !confirm('本当に「' + postTitle + '」を削除しますか？') ) return
