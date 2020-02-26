@@ -7,6 +7,7 @@
         <v-list-item
           v-for="(like, index) in likeData"
           :key="index"
+          :to="'/user/' + like.user.id"
         >
           <v-list-item-avatar>
             <v-img :src="like.user.profile_image"></v-img>
