@@ -20,6 +20,13 @@
             <v-list-item-subtitle>アカウント作成日：{{ userData[0].created }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
+
+        <v-divider />
+
+        <v-list subheader dense>
+          <v-subheader>フォロー：{{ userData[0].follows.length }}</v-subheader>
+          <v-subheader>フォロワー：{{ followData.length }}</v-subheader>
+        </v-list>
       </v-card>
 
       <h2 class="text-center my-8" v-if="user.id === userData[0].id">自分が投稿した顔写真一覧</h2>
@@ -221,11 +228,13 @@ import axios from '../../plugins/axios'
 
 export default {
   async asyncData ({ params }) {
-    const { data: userData } = await axios.get(`/v1/users?id=${params.id}`)
-    const { data: postData } = await axios.get(`/v1/posts?user_id=${params.id}`)
+    const { data: userData }   = await axios.get(`/v1/users?id=${params.id}`)
+    const { data: postData }   = await axios.get(`/v1/posts?user_id=${params.id}`)
+    const { data: followData } = await axios.get(`/v1/follows?follow_id=${params.id}`)
     return {
       userData,
       postData,
+      followData,
     }
   },
 
