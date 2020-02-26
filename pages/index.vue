@@ -65,7 +65,7 @@
         <v-spacer />
         <div v-if="user.id === post.user.id">
           <v-btn @click="canNotLike" icon>
-            <v-icon color="purple">mdi-heart</v-icon>
+            <v-icon disabled>mdi-heart</v-icon>
           </v-btn>
         </div>
         <div v-else-if="post.likes.some(like => like.user_id === user.id)">
@@ -78,8 +78,9 @@
             <v-icon>mdi-heart</v-icon>
           </v-btn>
         </div>
-        {{ post.count ? post.count : 0 }}
-
+        <n-link :to="'/like/' + post.id" class="original-link">
+          {{ post.count ? post.count : 0 }}
+        </n-link>
       </v-card-actions>
     </v-card>
 
@@ -260,7 +261,7 @@
         今すぐサインアップしてこのサービスを楽しんでみてください！！
       </h2>
       <v-btn color="primary my-3">
-        <n-link to="/signup" class="top-link">
+        <n-link to="/signup" class="original-link">
           今すぐサインアップする
         </n-link>
       </v-btn>
@@ -269,7 +270,7 @@
         もしもすでにサインアップ（登録）済みならば、サインインしましょう！
       </h2>
       <v-btn color="success my-3">
-        <n-link to="/signin" class="top-link">
+        <n-link to="/signin" class="original-link">
           今すぐサインインする
         </n-link>
       </v-btn>
@@ -432,7 +433,7 @@ export default {
 </script>
 
 <style scoped>
-.top-link {
+.original-link {
   color: white;
   font-weight: bold;
 }

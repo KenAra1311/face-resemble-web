@@ -220,10 +220,6 @@
 import axios from '../../plugins/axios'
 
 export default {
-  validate ({ params }) {
-    return /^[0-9a-z]+$/.test(params.id)
-  },
-
   async asyncData ({ params }) {
     const { data: userData } = await axios.get(`/v1/users?id=${params.id}`)
     const { data: postData } = await axios.get(`/v1/posts?user_id=${params.id}`)
