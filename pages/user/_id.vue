@@ -284,6 +284,8 @@ export default {
       }
       axios.post('/v1/follows', follow)
       .then(() => {
+        this.user.follows.push(follow)
+        this.followData.push(follow)
       })
       .catch(error => {
         console.log(error)
