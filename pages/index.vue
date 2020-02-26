@@ -65,7 +65,7 @@
         <v-spacer />
         <div v-if="user.id === post.user.id">
           <v-btn @click="canNotLike" icon>
-            <v-icon color="purple">mdi-heart</v-icon>
+            <v-icon disabled>mdi-heart</v-icon>
           </v-btn>
         </div>
         <div v-else-if="post.likes.some(like => like.user_id === user.id)">
