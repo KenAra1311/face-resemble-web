@@ -50,8 +50,16 @@
         <v-divider />
 
         <v-list subheader dense class="ml-3">
-          <v-subheader>フォロー：{{ userData[0].follows.length }}</v-subheader>
-          <v-subheader>フォロワー：{{ followData.length }}</v-subheader>
+          <v-subheader>フォロー数：
+            <n-link :to="'/follow/' + userData[0].id" class="original-link">
+              {{ userData[0].follows.length }}
+            </n-link>
+          </v-subheader>
+          <v-subheader>フォロワー数：
+            <n-link :to="'/followers/' + userData[0].id" class="original-link">
+              {{ followData.length }}
+            </n-link>
+          </v-subheader>
         </v-list>
       </v-card>
 
@@ -435,4 +443,8 @@ export default {
 </script>
 
 <style scoped>
+.original-link {
+  color: white;
+  font-weight: bold;
+}
 </style>
