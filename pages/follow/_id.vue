@@ -11,7 +11,13 @@
           :to="'/user/' + follow.id"
         >
           <v-list-item-avatar>
-            <v-img :src="follow.profile_image"></v-img>
+            <v-img
+              v-if="follow.profile_image"
+              :src="follow.profile_image"
+            ></v-img>
+            <v-icon v-else>
+              mdi-account-circle
+            </v-icon>
           </v-list-item-avatar>
 
           <v-list-item-content>
