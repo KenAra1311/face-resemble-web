@@ -20,6 +20,47 @@
             <v-list-item-subtitle>アカウント作成日：{{ userData[0].created }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
+
+        <div class="text-center my-4">
+          <v-btn
+            v-if="user.id === userData[0].id"
+            rounded
+            disabled
+          >
+            フォロー
+          </v-btn>
+          <v-btn
+            v-else-if="user.follows.some(follow => follow.follow_id === userData[0].id)"
+            @click="removeUserFollow(userData[0].id)"
+            rounded
+            color="error"
+          >
+            フォローから外す
+          </v-btn>
+          <v-btn
+            v-else
+            @click="followUser(userData[0].id)"
+            rounded
+            color="primary"
+          >
+            フォロー
+          </v-btn>
+        </div>
+
+        <v-divider />
+
+        <v-list subheader dense class="ml-3">
+          <v-subheader>フォロー数：
+            <n-link :to="'/follow/' + userData[0].id" class="original-link">
+              {{ userData[0].follows.length }}
+            </n-link>
+          </v-subheader>
+          <v-subheader>フォロワー数：
+            <n-link :to="'/follower/' + userData[0].id" class="original-link">
+              {{ followData.length }}
+            </n-link>
+          </v-subheader>
+        </v-list>
       </v-card>
 
       <h2 class="text-center my-8" v-if="user.id === userData[0].id">自分が投稿した顔写真一覧</h2>
@@ -221,11 +262,13 @@ import axios from '../../plugins/axios'
 
 export default {
   async asyncData ({ params }) {
-    const { data: userData } = await axios.get(`/v1/users?id=${params.id}`)
-    const { data: postData } = await axios.get(`/v1/posts?user_id=${params.id}`)
+    const { data: userData }   = await axios.get(`/v1/users?id=${params.id}`)
+    const { data: postData }   = await axios.get(`/v1/posts?user_id=${params.id}`)
+    const { data: followData } = await axios.get(`/v1/follows?follow_id=${params.id}`)
     return {
       userData,
       postData,
+      followData,
     }
   },
 
@@ -242,6 +285,46 @@ export default {
   }),
 
   methods: {
+    followUser (followId) {
+      const follow = {
+        user_id: this.user.id,
+        follow_id: followId,
+      }
+      axios.post('/v1/follows', follow)
+      .then(res => {
+        follow.id = res.data.id
+        this.user.follows.push(follow)
+        this.followData.push(follow)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    removeUserFollow (followingUserId) {
+      // この投稿に対する自分のいいねのデータを削除する
+      for (var key of this.user.follows ) {
+        if ( key.follow_id === followingUserId ) {
+          var followId = key.id
+          break
+        }
+      }
+      axios.delete(`/v1/follows/${followId}`)
+      .then(res => {
+        // いいねを取り消した配列の要素のデータも一緒に削除
+        for (var key of this.user['follows'] ) {
+          if ( key.follow_id === res.data.follow_id ) {
+            delete key.id
+            delete key.user_id
+            delete key.follow_id
+            break
+          }
+        }
+        this.followData.pop()
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
     deletePost (postId, postTitle, index) {
       // 削除の確認
       if ( !confirm('本当に「' + postTitle + '」を削除しますか？') ) return
@@ -310,18 +393,10 @@ export default {
         post_id: postId,
       }
       axios.post('/v1/likes', { like })
-      .then(() => {
-        this.postData[index].count++
-
-        axios.get('/v1/likes')
-        .then(res => {
-          var newLikeId = res.data.slice(-1)[0].id
-          like.id = newLikeId
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      .then(res => {
+        like.id = res.data.id
         this.postData[index]['likes'].push(like)
+        this.postData[index].count++
       })
       .catch(error => {
         console.log(error)
@@ -368,4 +443,8 @@ export default {
 </script>
 
 <style scoped>
+.original-link {
+  color: white;
+  font-weight: bold;
+}
 </style>

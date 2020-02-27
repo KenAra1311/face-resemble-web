@@ -57,7 +57,7 @@
 
       <v-spacer />
 
-      <n-link v-if="user" :to="'/user/' + user.id" title="自分のアカウント画面">
+      <n-link v-if="user" :to="'/user/' + user.id">
         <v-list-item-avatar color="grey">
           <v-img
             v-if="user.profile_image"
