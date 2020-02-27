@@ -283,7 +283,8 @@ export default {
         follow_id: followId,
       }
       axios.post('/v1/follows', follow)
-      .then(() => {
+      .then(res => {
+        follow.id = res.data.id
         this.user.follows.push(follow)
         this.followData.push(follow)
       })
@@ -300,7 +301,17 @@ export default {
         }
       }
       axios.delete(`/v1/follows/${followId}`)
-      .then(() => {
+      .then(res => {
+        // いいねを取り消した配列の要素のデータも一緒に削除
+        for (var key of this.user['follows'] ) {
+          if ( key.follow_id === res.data.follow_id ) {
+            delete key.id
+            delete key.user_id
+            delete key.follow_id
+            break
+          }
+        }
+        this.followData.pop()
       })
       .catch(error => {
         console.log(error)
@@ -374,18 +385,10 @@ export default {
         post_id: postId,
       }
       axios.post('/v1/likes', { like })
-      .then(() => {
-        this.postData[index].count++
-
-        axios.get('/v1/likes')
-        .then(res => {
-          var newLikeId = res.data.slice(-1)[0].id
-          like.id = newLikeId
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      .then(res => {
+        like.id = res.data.id
         this.postData[index]['likes'].push(like)
+        this.postData[index].count++
       })
       .catch(error => {
         console.log(error)
