@@ -56,7 +56,7 @@
             </n-link>
           </v-subheader>
           <v-subheader>フォロワー数：
-            <n-link :to="'/followers/' + userData[0].id" class="original-link">
+            <n-link :to="'/follower/' + userData[0].id" class="original-link">
               {{ followData.length }}
             </n-link>
           </v-subheader>
