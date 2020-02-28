@@ -36,6 +36,7 @@ export default {
   plugins: [
     '@/plugins/vuetify',
     '@/plugins/auth-check',
+    '@/plugins/parts',
   ],
   /*
   ** Nuxt.js dev-modules
