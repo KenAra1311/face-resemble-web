@@ -105,7 +105,9 @@
 
               <v-list-item-content>
                 <v-list-item-title class="headline">{{ post.title }}</v-list-item-title>
-                <v-list-item-subtitle>by {{ post.user.name }}</v-list-item-subtitle>
+                <v-list-item-subtitle>by
+                  <n-link :to="'/user/' + post.user.id" class="original-link">{{ post.user.name }}</n-link>
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
@@ -145,7 +147,9 @@
                   <v-icon>mdi-heart</v-icon>
                 </v-btn>
               </div>
-              {{ post.count ? post.count : 0 }}
+              <n-link :to="'/like/' + post.id" class="original-link">
+                {{ post.count ? post.count : 0 }}
+              </n-link>
             </v-card-actions>
           </v-card>
         </v-tab-item>
@@ -183,7 +187,9 @@
 
                 <v-list-item-content>
                   <v-list-item-title class="headline">{{ post.title }}</v-list-item-title>
-                  <v-list-item-subtitle>by {{ post.user.name }}</v-list-item-subtitle>
+                  <v-list-item-subtitle>by
+                    <n-link :to="'/user/' + post.user.id" class="original-link">{{ post.user.name }}</n-link>
+                  </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
 
@@ -216,7 +222,9 @@
                     <v-icon>mdi-heart</v-icon>
                   </v-btn>
                 </div>
-                {{ post.count ? post.count : 0 }}
+                <n-link :to="'/like/' + post.id" class="original-link">
+                  {{ post.count ? post.count : 0 }}
+                </n-link>
               </v-card-actions>
             </div>
           </v-card>
@@ -444,7 +452,8 @@ export default {
 
 <style scoped>
 .original-link {
-  color: white;
+  color: #D81B60;
   font-weight: bold;
+  text-decoration: underline
 }
 </style>

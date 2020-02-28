@@ -35,7 +35,7 @@
           <v-list-item-title class="headline">{{ post.title }}</v-list-item-title>
           <v-list-item-subtitle>
             by
-            <n-link :to="'/user/' + post.user.id">{{ post.user.name }}</n-link>
+            <n-link :to="'/user/' + post.user.id" class="original-link">{{ post.user.name }}</n-link>
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -434,7 +434,8 @@ export default {
 
 <style scoped>
 .original-link {
-  color: white;
+  color: #D81B60;
   font-weight: bold;
+  text-decoration: underline
 }
 </style>
