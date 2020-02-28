@@ -4,14 +4,14 @@
 
     <v-list class="mx-auto" max-width="344">
       <v-list-item
-        v-for="(like, index) in likeData"
+        v-for="(list, index) in lists"
         :key="index"
-        :to="'/user/' + like.user.id"
+        :to="'/user/' + list.user.id"
       >
         <v-list-item-avatar>
           <v-img
-            v-if="like.user.profile_image"
-            :src="like.user.profile_image"
+            v-if="list.user.profile_image"
+            :src="list.user.profile_image"
           ></v-img>
           <v-icon v-else>
             mdi-account-circle
@@ -19,7 +19,7 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title v-text="like.user.name"></v-list-item-title>
+          <v-list-item-title v-text="list.user.name"></v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -30,7 +30,7 @@
 export default {
   props: [
     'listHeader',
-    'likeData',
+    'lists',
   ],
 }
 </script>

@@ -3,7 +3,7 @@
     <div v-if="likeData[0]">
       <List
         listHeader="いいねをした人一覧"
-        :likeData="likeData"
+        :lists="likeData"
       ></List>
     </div>
 
