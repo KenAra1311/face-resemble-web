@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="displayLists[0]">
     <v-card
       max-width="344"
       class="mx-auto my-5"
@@ -117,6 +117,10 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+  </div>
+
+  <div v-else>
+    <p class="text-center">投稿は１件もされてないようです¯\_(ツ)_/¯</p>
   </div>
 </template>
 
