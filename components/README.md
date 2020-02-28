@@ -1,7 +1,20 @@
 # COMPONENTS
 
-**This directory is not required, you can delete it if you don't want to use it.**
+## Card.vue
 
-The components directory contains your Vue.js Components.
+投稿を取得して表示する部品です。
 
-_Nuxt.js doesn't supercharge these components._
+- user :
+  現在ログインしているユーザの情報を格納するための配列になります。
+
+- posts :
+  displayLists （ページネーション）用に加工される前に、投稿の情報を格納しておく配列になります。
+
+- displayLists :
+  ページネーションで表示する投稿の情報を格納する配列になります。
+
+- length :
+  ページネーションの項目数を出力します。（自動処理）
+
+- pageSize :
+  ページネーションの１ページで表示する投稿数を処理します。
