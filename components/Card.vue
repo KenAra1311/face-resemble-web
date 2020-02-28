@@ -64,6 +64,7 @@
 
       <v-card-actions>
         <v-spacer />
+
         <div v-if="user.id === post.user.id">
           <v-btn @click="canNotLike" icon>
             <v-icon disabled>mdi-heart</v-icon>
@@ -94,6 +95,7 @@
       ></v-pagination>
     </div>
 
+    <!-- 出力するダイアログ -->
     <v-dialog
       v-model="dialog"
       max-width="290"
@@ -107,6 +109,7 @@
 
         <v-card-actions>
           <v-spacer />
+
           <v-btn
             color="green darken-1"
             text

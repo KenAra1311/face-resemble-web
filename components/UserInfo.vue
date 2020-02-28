@@ -13,6 +13,7 @@
           mdi-account-circle
         </v-icon>
       </v-list-item-avatar>
+
       <v-list-item-content>
         <v-list-item-title class="headline">{{ userData.name }}</v-list-item-title>
         <v-list-item-subtitle>アカウント作成日：{{ userData.created }}</v-list-item-subtitle>
@@ -53,17 +54,21 @@
           {{ userData.follows.length }}
         </n-link>
       </v-subheader>
+
       <v-subheader>フォロワー数：
         <n-link :to="'/follower/' + userData.id" class="original-link">
           {{ followData.length }}
         </n-link>
       </v-subheader>
+
       <v-subheader>いいねをもらった数：
         {{ userData.like_total_count }}
       </v-subheader>
+
       <v-subheader>いいねをした数：
         {{ userData.likes.length }}
       </v-subheader>
+
       <v-subheader>投稿した顔写真の数：
         {{ userData.posts.length }}
       </v-subheader>
