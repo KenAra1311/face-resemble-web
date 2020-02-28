@@ -60,6 +60,15 @@
               {{ followData.length }}
             </n-link>
           </v-subheader>
+          <v-subheader>いいねをもらった数：
+            {{ userData[0].like_total_count }}
+          </v-subheader>
+          <v-subheader>いいねをした数：
+            {{ userData[0].likes.length }}
+          </v-subheader>
+          <v-subheader>投稿した顔写真の数：
+            {{ userData[0].posts.length }}
+          </v-subheader>
         </v-list>
       </v-card>
 

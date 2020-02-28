@@ -53,14 +53,6 @@
               </v-avatar>
             </td>
           </tr>
-          <tr>
-            <td>投稿した顔写真の数</td>
-            <td>{{ user.posts.length ? user.posts.length : 0 }}</td>
-          </tr>
-          <tr>
-            <td>いいねをもらった数</td>
-            <td>{{ user.like_total_count ? user.like_total_count : 0 }}</td>
-          </tr>
         </tbody>
       </template>
     </v-simple-table>
