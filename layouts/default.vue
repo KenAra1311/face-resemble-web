@@ -193,31 +193,4 @@ input, textarea {
   z-index: 10;
   top: 80px;
 }
-/* 画像の枠 */
-@keyframes borderFlashing-pink {
-  0% {
-    border: 1.5px solid #D81B60;
-  }
-  100% {
-    border: 1.5px solid transparent;
-  }
-}
-.border-animation-pink {
-  cursor: pointer;
-  border: 1.5px solid #D81B60;
-  animation: borderFlashing-pink 1s ease infinite alternate;
-}
-@keyframes borderFlashing-blue {
-  0% {
-    border: 1.5px solid #1E88E5;
-  }
-  100% {
-    border: 1.5px solid transparent;
-  }
-}
-.border-animation-blue {
-  cursor: pointer;
-  border: 1.5px solid #1E88E5;
-  animation: borderFlashing-blue 1s ease infinite alternate;
-}
 </style>

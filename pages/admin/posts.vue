@@ -23,7 +23,7 @@
             <td>{{ post.user.name }}</td>
             <td>{{ post.title }}</td>
             <td>
-              <v-img :src="post.image" height="194" max-width="344"></v-img>
+              <v-img :src="post.image" height="auto" max-width="344"></v-img>
             </td>
             <td>{{ post.emotion ? post.emotion : 'なし' }}</td>
             <td>{{ post.content ? post.content : 'なし' }}</td>
