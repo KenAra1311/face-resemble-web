@@ -1,31 +1,10 @@
 <template>
   <div v-if="user">
     <div v-if="followData[0]">
-      <h2 v-if="user.id === userData[0].id" class="text-center my-8">自分をフォローしている人たち</h2>
-      <h2 v-else class="text-center my-8">{{ userData[0].name }} さんをフォローしている人たち</h2>
-
-      <v-list class="mx-auto" max-width="344">
-        <v-list-item
-          v-for="(follow, index) in followData"
-          :key="index"
-          :to="'/user/' + follow.user.id"
-        >
-          <v-list-item-avatar>
-            <v-img
-              v-if="follow.user.profile_image"
-              :src="follow.user.profile_image"
-            ></v-img>
-            <v-icon v-else>
-              mdi-account-circle
-            </v-icon>
-          </v-list-item-avatar>
-
-          <v-list-item-content>
-            <v-list-item-title v-text="follow.user.name"></v-list-item-title>
-          </v-list-item-content>
-
-        </v-list-item>
-      </v-list>
+      <List
+        :listHeader="userData[0].name ? userData[0].name + 'さんをフォローしている人たち' : '自分をフォローている人たち'"
+        :lists="followData"
+      ></List>
     </div>
 
     <div v-else>
