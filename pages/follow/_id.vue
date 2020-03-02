@@ -1,10 +1,31 @@
 <template>
   <div v-if="user">
     <div v-if="followData[0]">
-      <List
-        :listHeader="userData[0].name ? userData[0].name + 'さんがフォローした人たち' : '自分がフォローした人たち'"
-        :lists="follows"
-      ></List>
+      <h2 v-if="user.id === userData[0].id" class="text-center my-8">自分がフォローした人たち</h2>
+      <h2 v-else class="text-center my-8">{{ userData[0].name }} さんがフォローした人たち</h2>
+
+      <v-list class="mx-auto" max-width="344">
+        <v-list-item
+          v-for="(follow, index) in follows"
+          :key="index"
+          :to="'/user/' + follow.id"
+        >
+          <v-list-item-avatar>
+            <v-img
+              v-if="follow.profile_image"
+              :src="follow.profile_image"
+            ></v-img>
+            <v-icon v-else>
+              mdi-account-circle
+            </v-icon>
+          </v-list-item-avatar>
+
+          <v-list-item-content>
+            <v-list-item-title v-text="follow.name"></v-list-item-title>
+          </v-list-item-content>
+
+        </v-list-item>
+      </v-list>
     </div>
 
     <div v-else>
@@ -39,12 +60,11 @@ export default {
       for ( var data of res.data ) {
         for ( var follow of this.followData ) {
           if ( data.id === follow.follow_id ) {
-            this.follows[0].user.push(data)
+            this.follows.push(data)
             continue
           }
         }
       }
-      this.follows[0].user = this.follows[0].user[0]
     })
     .catch(error => {
       console.log(error)
@@ -52,9 +72,7 @@ export default {
   },
 
   data: () => ({
-    follows: [
-      { user: [] },
-    ],
+    follows: [],
   }),
 
   fetch ({ store, redirect }) {
