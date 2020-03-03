@@ -3,6 +3,7 @@
     <v-form
       ref="form"
       v-model="valid"
+      class="mb-8"
       lazy-validation
     >
       <v-row>
@@ -36,6 +37,35 @@
         </v-col>
       </v-row>
     </v-form>
+
+    <v-list
+      v-for="(comment, index) in commentData"
+      :key="index"
+      class="mx-auto"
+      max-width="auto"
+    >
+      <v-list-item class="my-2">
+        <n-link :to="'/user/' + comment.user.id">
+          <v-list-item-avatar>
+            <v-img
+              v-if="comment.user.profile_image"
+              :src="comment.user.profile_image"
+            ></v-img>
+            <v-icon v-else>
+              mdi-account-circle
+            </v-icon>
+          </v-list-item-avatar>
+        </n-link>
+
+        <v-list-item-content>
+          <v-list-item-subtitle v-text="comment.user.name" class="body-2 font-weight-light"></v-list-item-subtitle>
+          <v-list-item-title v-text="comment.comment" class="body-2 my-4"></v-list-item-title>
+          <v-list-item-subtitle v-text="comment.created" class="overline font-italic font-weight-light"></v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider v-if="index + 1 < commentData.length"/>
+    </v-list>
   </div>
 </template>
 
@@ -44,9 +74,11 @@ import axios from '../../plugins/axios'
 
 export default {
   async asyncData ({ params }) {
-    const { data: postData }   = await axios.get(`/v1/posts?id=${params.id}`)
+    const { data: postData }      = await axios.get(`/v1/posts?id=${params.id}`)
+    const { data: commentData }   = await axios.get(`/v1/comments?post_id=${params.id}`)
     return {
       postData,
+      commentData,
     }
   },
 
