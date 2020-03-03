@@ -43,6 +43,7 @@
       :key="index"
       class="mx-auto"
       max-width="auto"
+      :color="comment.user.id === user.id ? 'grey darken-3' : ''"
     >
       <v-list-item class="my-2">
         <n-link :to="'/user/' + comment.user.id">
@@ -63,8 +64,6 @@
           <v-list-item-subtitle v-text="comment.created" class="overline font-italic font-weight-light"></v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
-
-      <v-divider v-if="index + 1 < commentData.length"/>
     </v-list>
   </div>
 </template>
@@ -89,6 +88,7 @@ export default {
   },
 
   data: () => ({
+    valid: true,
     comment: '',
     commentRules: [
       v => (v && v.length <= 255) || '255文字以内で入力してください！',
