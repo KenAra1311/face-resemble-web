@@ -64,12 +64,14 @@
 
       <v-card-actions>
         <v-btn icon :to="'/comment/' + post.id">
-          <v-icon color="blue">comment</v-icon>
+          <v-badge
+            color="green"
+            :content="post.comments.length"
+            :value="post.comments.length"
+          >
+            <v-icon color="blue">comment</v-icon>
+          </v-badge>
         </v-btn>
-        <n-link :to="'/comment/' + post.id" class="original-link">
-          {{ post.comments ? post.comments.length : 0 }}
-        </n-link>
-
         <v-spacer />
 
         <div v-if="user.id === post.user.id">
