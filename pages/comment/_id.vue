@@ -114,8 +114,10 @@ export default {
         post_id: postId,
       }
       axios.post(`/v1/comments`, { comment })
-      .then(() => {
+      .then(res => {
+        this.comment = ""
         this.$store.commit('setLoading', false)
+        this.commentData.unshift(res.data)
       })
       .catch(error => {
         this.$store.commit('setLoading', false)
