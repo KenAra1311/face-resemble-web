@@ -63,6 +63,15 @@
       </v-card-text>
 
       <v-card-actions>
+        <v-btn icon :to="'/comment/' + post.id">
+          <v-badge
+            color="green"
+            :content="post.comments.length"
+            :value="post.comments.length"
+          >
+            <v-icon color="blue">comment</v-icon>
+          </v-badge>
+        </v-btn>
         <v-spacer />
 
         <div v-if="user.id === post.user.id">
