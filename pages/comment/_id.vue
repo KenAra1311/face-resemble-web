@@ -107,6 +107,9 @@ export default {
 
   methods: {
     commentSend (postId) {
+      // 入力コメントが空白時は何もしない
+      if ( this.comment === null ) return
+
       this.$store.commit('setLoading', true)
       const comment = {
         comment: this.comment,
@@ -115,7 +118,7 @@ export default {
       }
       axios.post(`/v1/comments`, { comment })
       .then(res => {
-        this.comment = ""
+        this.comment = null
         this.$store.commit('setLoading', false)
         this.commentData.unshift(res.data)
       })
