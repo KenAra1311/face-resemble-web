@@ -37,44 +37,52 @@
         </v-col>
       </v-row>
     </v-form>
-
-    <v-list
+    
+    <v-card
       v-for="(comment, index) in commentData"
       :key="index"
-      class="mx-auto"
-      max-width="auto"
       :color="comment.user.id === user.id ? 'grey darken-3' : ''"
+      class="mx-auto"
     >
-      <v-list-item class="my-2">
-        <n-link :to="'/user/' + comment.user.id">
-          <v-list-item-avatar>
-            <v-img
-              v-if="comment.user.profile_image"
-              :src="comment.user.profile_image"
-            ></v-img>
-            <v-icon v-else>
-              mdi-account-circle
-            </v-icon>
-          </v-list-item-avatar>
-        </n-link>
+      <v-card-actions v-if="comment.user.id === user.id">
+        <v-spacer />
 
-        <v-list-item-content>
-          <v-icon
-            v-if="comment.user.id === user.id"
-            @click="deleteComment(comment.id, index)"
-            color="error"
-            title="コメントを削除する"
-            small
-          >
-            delete
-          </v-icon>
+        <v-icon
+          @click="deleteComment(comment.id, index)"
+          color="error"
+          title="コメントを削除する"
+          small
+        >
+          delete
+        </v-icon>
+      </v-card-actions>
 
-          <v-list-item-subtitle v-text="comment.user.name" class="body-2 font-weight-light"></v-list-item-subtitle>
-          <v-list-item-title v-text="comment.comment" class="body-2 my-4"></v-list-item-title>
-          <v-list-item-subtitle v-text="comment.created" class="overline font-italic font-weight-light"></v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
+      <v-card-text>
+        <v-list-item>
+          <n-link :to="'/user/' + comment.user.id">
+            <v-list-item-avatar>
+              <v-img
+                v-if="comment.user.profile_image"
+                :src="comment.user.profile_image"
+              ></v-img>
+              <v-icon v-else>
+                mdi-account-circle
+              </v-icon>
+            </v-list-item-avatar>
+          </n-link>
+
+          <v-list-item-content>
+            <n-link :to="'/user/' + comment.user.id">
+              <v-list-item-subtitle v-text="comment.user.name" class="body-2 font-weight-light"></v-list-item-subtitle>
+            </n-link>
+          </v-list-item-content>
+        </v-list-item>
+
+        <div class="text--primary">{{ comment.comment }}</div>
+      </v-card-text>
+
+      <v-card-subtitle v-text="comment.created" class="overline font-italic font-weight-light"></v-card-subtitle>
+    </v-card>
   </div>
 </template>
 
