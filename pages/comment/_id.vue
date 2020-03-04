@@ -59,6 +59,16 @@
         </n-link>
 
         <v-list-item-content>
+          <v-icon
+            v-if="comment.user.id === user.id"
+            @click="deleteComment(comment.id, index)"
+            color="error"
+            title="コメントを削除する"
+            small
+          >
+            delete
+          </v-icon>
+
           <v-list-item-subtitle v-text="comment.user.name" class="body-2 font-weight-light"></v-list-item-subtitle>
           <v-list-item-title v-text="comment.comment" class="body-2 my-4"></v-list-item-title>
           <v-list-item-subtitle v-text="comment.created" class="overline font-italic font-weight-light"></v-list-item-subtitle>
@@ -104,9 +114,21 @@ export default {
         post_id: postId,
       }
       axios.post(`/v1/comments`, { comment })
-      .then(
+      .then(() => {
         this.$store.commit('setLoading', false)
-      )
+      })
+      .catch(error => {
+        this.$store.commit('setLoading', false)
+        console.log(error)
+      })
+    },
+    deleteComment (commentId, index) {
+      this.$store.commit('setLoading', true)
+      axios.delete(`/v1/comments/${commentId}`)
+      .then(() => {
+        this.$store.commit('setLoading', false)
+        this.commentData.splice(index, 1)
+      })
       .catch(error => {
         this.$store.commit('setLoading', false)
         console.log(error)
