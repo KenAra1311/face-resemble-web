@@ -130,10 +130,6 @@
       </v-card>
     </v-dialog>
   </div>
-
-  <div v-else>
-    <p class="text-center">投稿は１件もされてないようです¯\_(ツ)_/¯</p>
-  </div>
 </template>
 
 <script>
